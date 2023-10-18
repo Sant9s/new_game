@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
-void putPixel(uint32_t hexColor, uint64_t x, uint64_t y);
+void drawChar(uint64_t hexColor, char character);
+void drawString(uint64_t hexColor, char* word);
+void backspace();
+void newline();
+void tab();
+void space();
 
 #endif
