@@ -15,6 +15,7 @@ void clearBuffer() {
     for (int i = 0; i < 4096; i++) {
         buff[i] = '\0';
     }
+    indexBuff = 0;
 }
 
 void addBuffer(char key) {
@@ -38,25 +39,23 @@ void deleteBuffer() {
 void commands() {
     char target[] = "help";  // Target string to search for
     int strlen = 4;
-    if (indexBuff >= 4) {
-        // Check if enough characters are available in the buffer
-        for (int i = 0; i <= indexBuff - strlen; i++) {
-            // Check if the target string is present starting at index i
-            int match = 1;
-            for (int j = 0; j < strlen; j++) {
-                if ((char)buff[i + j] != target[j]) {
-                    match = 0;
-                    break;
-                }
-            }
 
-            if (match) {
-                help();
+    if (indexBuff == strlen) {
+        // Check if the buffer contains only and exactly the characters for "help"
+        int match = 1;
+        for (int i = 0; i < strlen; i++) {
+            if ((char)buff[i] != target[i]) {
+                match = 0;
                 break;
             }
         }
+
+        if (match) {
+            help();
+        }
     }
 }
+
 
 void zoomIn() {
     clear();

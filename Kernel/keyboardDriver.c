@@ -34,7 +34,7 @@ void keyboard_handler(){
 
 
 	if(key == 0x39){ // space
-		clearBuffer();
+		addBuffer(ScanCodes[key]);
 		addScreen(ScanCodes[key]);
         space();
 		return;
@@ -45,8 +45,8 @@ void keyboard_handler(){
 		return;
 	}
 	if(ScanCodes[key] == '\t'){
+		addBuffer(ScanCodes[key]);
 		addScreen(ScanCodes[key]);
-		clearBuffer();
         tab();
 		return;
 	}
@@ -63,8 +63,8 @@ void keyboard_handler(){
 		}
         if (capsLockOn) {
 			drawChar(0XFF0000, ScanCodes[key] - ('a' - 'A'));
-			addScreen(ScanCodes[key]);
-			addBuffer(ScanCodes[key]);
+			addScreen(ScanCodes[key] - ('a' - 'A'));
+			addBuffer(ScanCodes[key] - ('a' - 'A'));
         } else {
 			drawChar(0xFF0000, ScanCodes[key]);
 			addScreen(ScanCodes[key]);
