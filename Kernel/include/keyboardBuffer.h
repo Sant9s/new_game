@@ -3,6 +3,7 @@
 
 void clearBuffer();
 void addBuffer(char key);
+void addScreen(char key);
 void deleteBuffer();
 void commands();
 void zoomIn();

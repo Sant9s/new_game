@@ -70,6 +70,23 @@ static void put_square(uint32_t x, uint32_t y, uint32_t size, uint64_t hexColor)
     }
 }
 
+// Funcion que limpia la pantalla con un color
+void clearColor(uint64_t hexColor){
+	for (int x = 0; x < VBE_mode_info->width; x++){
+		for (int y = 0; y < VBE_mode_info-> height; y++){
+			putPixel(hexColor,x,y);
+		}
+	}
+    cursorX=0;
+    cursorY=0;
+	return;
+}
+
+// Funcion que limpia la pantalla
+void clear(){
+	clearColor(0x000000);
+	return;
+}
 
 
 void drawChar(uint64_t hexColor, char character) {
@@ -99,7 +116,7 @@ void drawChar(uint64_t hexColor, char character) {
             aux <<= 1;
         }
     }
-    cursorX += DEFAULT_CHAR_WIDTH;
+    cursorX += DEFAULT_CHAR_WIDTH*size;
 }
 
 void drawString(uint64_t hexColor, char* word) {

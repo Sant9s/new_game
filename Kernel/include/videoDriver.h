@@ -10,5 +10,6 @@ void newline();
 void tab();
 void space();
 void changeSize(uint32_t new_size);
+void clear();
 
 #endif

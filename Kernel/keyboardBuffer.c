@@ -4,11 +4,12 @@
 #include <videoDriver.h>
 
 uint16_t buff[4096];
-uint16_t index = 0;
+uint16_t indexBuff = 0;
 
+uint16_t screen[4096];
+uint16_t indexScreen = 0;
 
 void help();
-void cero();
 
 void clearBuffer() {
     for (int i = 0; i < 4096; i++) {
@@ -17,21 +18,29 @@ void clearBuffer() {
 }
 
 void addBuffer(char key) {
-    buff[index] = key;
-    index++;
+    buff[indexBuff] = key;
+    indexBuff++;
+}
+
+void addScreen(char key) {
+    screen[indexScreen] = key;
+    indexScreen++;
 }
 
 void deleteBuffer() {
-    index--;
-    buff[index] = '\0';
+    indexBuff--;
+    buff[indexBuff] = '\0';
+
+    indexScreen--;
+    screen[indexScreen] = '\0';
 }
 
 void commands() {
     char target[] = "help";  // Target string to search for
     int strlen = 4;
-    if (index >= 4) {
+    if (indexBuff >= 4) {
         // Check if enough characters are available in the buffer
-        for (int i = 0; i <= index - strlen; i++) {
+        for (int i = 0; i <= indexBuff - strlen; i++) {
             // Check if the target string is present starting at index i
             int match = 1;
             for (int j = 0; j < strlen; j++) {
@@ -50,11 +59,33 @@ void commands() {
 }
 
 void zoomIn() {
-    drawString(0X00FF00, "MAS");
-    changeSize(1);
+    clear();
+    changeSize(-1);
+    for (int i = 0; i < indexScreen; i++) {
+        if (screen[i] == ' ') {
+            space();
+        } else if (screen[i] == '\t') {
+            tab();
+        } else if (screen[i] == '\n') {
+            newline();
+        } else {
+            drawChar(0xFF0000, screen[i]);
+        }
+    }
 }
 
 void zoomOut() {
-    drawString(0X00FF00, "MENOS");
-    changeSize(-1);
+    clear();
+    changeSize(1);
+    for (int i = 0; i < indexScreen; i++) {
+        if (screen[i] == ' ') {
+            space();
+        } else if (screen[i] == '\t') {
+            tab();
+        } else if (screen[i] == '\n') {
+            newline();
+        } else {
+            drawChar(0xFF0000, screen[i]);
+        }
+    }
 }

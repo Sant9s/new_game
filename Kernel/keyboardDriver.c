@@ -5,7 +5,7 @@
 
 static char ScanCodes[256]={0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
 '\b', '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', '+', '\n', 0, 'a', 's', 
-'d', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 0, 0, '-' };
+'d', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 0, 0, '-', 0, 0, 0, ' ' };
 
 int getKey();
 static int ctrlPressed = 0;
@@ -15,30 +15,10 @@ void keyboard_handler(){
 	int key = getKey();
 	
     static int capsLockOn = 0;
-	static int ctrlOn = 0;
 
     if (key == 0x3A) {
         capsLockOn = 1 - capsLockOn;
     }
-
-	// while (key == 0x1D) {
-	// 	// ctrlOn = 1 - ctrlOn;
-	// 	// // drawString(0x00FF00, "ctrl");
-
-	// 	// if (ctrlOn) {
-	// 	// 	drawString(0xFF0000, "ctrl");
-	// 		if (key == 0x35) {
-	// 			zoomIn();
-	// 			drawString(0xFFFF00, "ctrl");
-	// 		}
-	// 		if (key == 0x1B) {
-	// 			zoomOut();
-	// 			drawString(0xFF00FF, "ctrl");
-	// 		}
-	// 	// } else {
-	// 	// 	drawString(0x00FF00, "ctrl");
-	// 	// }
-	// }
 
 	if (key == 0x1D) {
 		ctrlPressed = 1;
@@ -47,16 +27,15 @@ void keyboard_handler(){
 	}
 
 	if (ctrlPressed && (key == 0x35)) { // Plus key on the numeric keypad
-        //zoomIn();
-        drawString(0xFFFF00, "ctrl");
+        zoomIn();
     } else if (ctrlPressed && (key == 0x1B)) { // Minus key on the numeric keypad
-        //zoomOut();
-        drawString(0xFF00FF, "ctrl");
+        zoomOut();
 	}
 
 
 	if(key == 0x39){ // space
 		clearBuffer();
+		addScreen(ScanCodes[key]);
         space();
 		return;
 	}
@@ -66,11 +45,13 @@ void keyboard_handler(){
 		return;
 	}
 	if(ScanCodes[key] == '\t'){
+		addScreen(ScanCodes[key]);
 		clearBuffer();
         tab();
 		return;
 	}
 	if(ScanCodes[key] == '\n'){
+		addScreen(ScanCodes[key]);
 		commands();
 		clearBuffer();
 		newline();
@@ -82,12 +63,12 @@ void keyboard_handler(){
 		}
         if (capsLockOn) {
 			drawChar(0XFF0000, ScanCodes[key] - ('a' - 'A'));
+			addScreen(ScanCodes[key]);
 			addBuffer(ScanCodes[key]);
-            //ncPrintChar(ScanCodes[key] - ('a' - 'A'));
         } else {
 			drawChar(0xFF0000, ScanCodes[key]);
+			addScreen(ScanCodes[key]);
 			addBuffer(ScanCodes[key]);
-		    //ncPrintChar(ScanCodes[key]);
         }
 		return;
 	}
