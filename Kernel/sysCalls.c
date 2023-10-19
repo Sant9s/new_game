@@ -1,11 +1,12 @@
 #include <sysCalls.h>
 #include <naiveConsole.h>
+#include <videoDriver.h>
 
 void sys_write(char *text, int lenght, int fd) {
     if (fd == 1) {
-        ncPrint(text);
+        drawChar(0xFF0000, text[0]);
     } else if (fd == 2) {
-        ncPrintColor(text, 0x04, 0x00);
+        drawChar(0xFFFF00, text[0]);
     }
     
 }
