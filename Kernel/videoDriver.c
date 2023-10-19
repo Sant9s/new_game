@@ -49,6 +49,10 @@ uint32_t cursorX  = 0;
 uint32_t cursorY  = 0;
 uint32_t size = 1;
 
+void changeSize(uint32_t new_size) {
+    size += new_size;
+}
+
 
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *)(uintptr_t) VBE_mode_info->framebuffer;

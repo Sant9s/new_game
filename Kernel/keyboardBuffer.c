@@ -6,7 +6,9 @@
 uint16_t buff[4096];
 uint16_t index = 0;
 
+
 void help();
+void cero();
 
 void clearBuffer() {
     for (int i = 0; i < 4096; i++) {
@@ -24,7 +26,7 @@ void deleteBuffer() {
     buff[index] = '\0';
 }
 
-void checkCommands() {
+void commands() {
     char target[] = "help";  // Target string to search for
     int strlen = 4;
     if (index >= 4) {
@@ -45,4 +47,14 @@ void checkCommands() {
             }
         }
     }
+}
+
+void zoomIn() {
+    drawString(0X00FF00, "MAS");
+    changeSize(1);
+}
+
+void zoomOut() {
+    drawString(0X00FF00, "MENOS");
+    changeSize(-1);
 }

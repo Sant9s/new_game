@@ -4,6 +4,8 @@
 void clearBuffer();
 void addBuffer(char key);
 void deleteBuffer();
-void checkCommands();
+void commands();
+void zoomIn();
+void zoomOut();
 
 #endif

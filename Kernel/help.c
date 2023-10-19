@@ -2,5 +2,10 @@
 #include <videoDriver.h>
 
 void help() {
-    drawString(0xFF0000, "mati");
+    newline();
+    drawString(0xFF0000, "HELP");
+    newline();
+    drawString(0xFF0000, "zoomIn");
+    newline();
+    drawString(0xFF0000, "zoomOut");
 }
