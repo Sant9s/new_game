@@ -94,8 +94,10 @@ void drawChar(uint64_t hexColor, char character) {
     int x = a;
     int y = cursorY;
     int start = character - 33;
+    int flag = 1;
 
-    if (cursorX == SCREEN_WIDTH - size*8) {
+    if (a >= SCREEN_WIDTH - size * 8 && character != '\n') {
+        flag = 0;
         newline();
     }
 
@@ -116,7 +118,9 @@ void drawChar(uint64_t hexColor, char character) {
             aux <<= 1;
         }
     }
-    cursorX += DEFAULT_CHAR_WIDTH*size;
+    if (flag) {
+        cursorX += DEFAULT_CHAR_WIDTH*size;
+    }
 }
 
 void drawString(uint64_t hexColor, char* word) {
