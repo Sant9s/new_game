@@ -1,7 +1,9 @@
 #include <videoDriver.h>
 #include <font.h>
+#include <lib.h>
 
 unsigned int SCREEN_WIDTH = 1024;
+unsigned int SCREEN_HEIGHT = 768;
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -176,4 +178,45 @@ void tab(){
         return;
 }
 
+void moveOneLineUp() {
+    char* dst = (char*)(uintptr_t)(VBE_mode_info->framebuffer); // Puntero al framebuffer
+    char* src = dst + VBE_mode_info->pitch * size * 16; // Puntero a la línea de origen
+    uint64_t numBytes = VBE_mode_info->pitch * (VBE_mode_info->height - size * 16); // Cantidad de bytes a copiar
+
+    memcpy(dst, src, numBytes); // Copia los bytes desde la línea de origen a la línea de destino
+    // memset((void*)(uintptr_t)(VBE_mode_info->framebuffer + VBE_mode_info->pitch * (VBE_mode_info->height - size * 16)), 0, VBE_mode_info->pitch * size * 16); // Rellena con ceros la parte de la línea de destino copiada
+    drawRectangle(0x000000, 0, VBE_mode_info->height - size*16, 1024, size*16 );
+    cursorY -= (size * 16); // Actualiza la posición del cursor en el eje Y
+}
+
+void character(uint64_t hexColor, char c){
+        if (c == '\b') { // backspace
+            backspace();
+            return;
+        }
+        if (c == '\t') { // Tab
+            tab();
+            return;
+        }
+        if (c == '\n') { // Salto de línea
+            newline();
+            return;
+        }
+        if (c == ' '){
+            cursorX += size*8;
+            return;
+        }
+        //Carácter
+        if (cursorX >= SCREEN_WIDTH) {
+            cursorX = 0;
+            cursorY += size*16;
+        }
+        if (cursorY >= SCREEN_HEIGHT){ 
+            cursorX = 0;
+            moveOneLineUp();
+        }
+        drawChar(hexColor, c);
+        cursorX += size*8;
+        return;
+}
 

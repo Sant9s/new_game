@@ -1,4 +1,5 @@
 GLOBAL call_sys_write
+GLOBAL call_sys_read
 
 section .text
 
@@ -19,3 +20,5 @@ section .text
 
 call_sys_write:
     call_to_handler 1
+call_sys_read:
+    call_to_handler 2
