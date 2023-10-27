@@ -7,6 +7,10 @@
 
 void call_sys_read(char *buf, int size, int fd);
 void call_sys_write(char *buf, int size, int fd);
+int call_getBufferPosition();
+int call_getCharAt(int pos);
+void call_setFontSize(int size);
+void call_sys_zoomOut();
 
 
 #endif

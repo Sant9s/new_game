@@ -1,5 +1,5 @@
 /* sampleCodeModule.c */
-#include "shell.h"
+#include <shell.h>
 char * v = (char*)0xB8000 + 79 * 2;
 
 static int var1 = 0;

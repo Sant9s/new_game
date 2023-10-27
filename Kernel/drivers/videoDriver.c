@@ -220,3 +220,21 @@ void character(uint64_t hexColor, char c){
         return;
 }
 
+void characterAt(uint64_t hexColor, char c, uint32_t x, uint32_t y){
+    uint32_t auxX = cursorX;
+    uint32_t auxY = cursorY;
+    cursorX = x;
+    cursorY = y;
+    character(hexColor, c);
+    cursorX = auxX;
+    cursorY = auxY;
+}
+
+void zoomOut() {
+    changeSize(size+1);
+    clear();
+    for (int i = 0; i< SCREEN; i++) {
+        drawChar(screen[i]);
+    }
+}
+

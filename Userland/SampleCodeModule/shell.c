@@ -10,7 +10,7 @@ void lineRead(char * line){
 }
 
 void bufferize (){
-    
+    putC('a');
     int i = 0;
     int end_of_buffer = 0;
     int flag = 0;

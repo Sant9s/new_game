@@ -2,67 +2,43 @@
 #include <help.h>
 #include <stdint.h>
 #include <videoDriver.h>
+#include <string.h>
 
-uint16_t buff[BUFF];
-uint16_t buffLenght = 0;
-uint16_t buffPos = 0;
 
-uint16_t screen[SCREEN];
-uint16_t screenLenght = 0;
-uint16_t screenPos = 0;
+char buff[BUFFER_SIZE];
+uint16_t indexBuff = 0;
 
-uint16_t * getBuff() {
-    return buff;
-}
+uint16_t screen[BUFFER_SIZE];
+uint16_t indexScreen = 0;
 
-uint16_t * getScreen() {
-    return screen;
-}
+int circularBuffer = 0;             // flag to check if the buffer reached its end
 
-int getBuffPosition() {
-    return buffPos;
-}
+void help();
+void div0();
+void commandNotFound();
+void clearScreen();
 
-int getScreenPosition() {
-    return screenPos;
-}
-
-int setBuffPos(int pos) {
-    buffPos = pos;
-    return pos;
-}
-
-int setScreenPos(int pos) {
-    screenPos = pos;
-    return pos;
-}
-
-uint16_t getBuffCharAt(int pos) {
-    return buff[pos];
-}
-
-uint16_t getScreenCharAt(int pos) {
-    return screen[pos];
-}
-
-void consumeBuffAt(int pos) {
-    buff[pos] = 0;
-}
-
-void consumeScreenAt(int pos) {
-    screen[pos] = 0;
-}
-
-void cleanBuff() {
-    for (int i = 0; i < BUFF; i++)
-    {
+void clearBuffer() {
+    for (int i = 0; i < BUFFER_SIZE; i++) {
         buff[i] = '\0';
     }
+    indexBuff = 0;
 }
 
-void cleanScreen() {
-    for (int i = 0; i < SCREEN; i++)
-    {
-        screen[i] = '\0';
+void addBuffer(char key) {
+    if(indexBuff == BUFFER_SIZE){
+       indexBuff = 0;                      // circular buffer
+    }
+    buff[indexBuff++] = key;
+}
+
+void addScreen(char key) {
+    screen[indexScreen++] = key;
+}
+
+void deleteBuffer() {
+    if(indexBuff >= 1){
+        buff[--indexBuff] = '\0';                                       // que pasa si indexBuff es 0??
+        screen[--indexScreen] = '\0';
     }
 }

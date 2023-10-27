@@ -3,10 +3,14 @@
 #include <stdint.h>
 #include <naiveConsole.h>
 #include <sysCalls.h>
+#include <videoDriver.h>
+#include <keyboardDriver.h>
+#include <keyboardBuffer.h>
 
 static void int_20();
 static void int_21();
-static void int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8);
+static int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8);
+
 
 void irqDispatcher(uint64_t irq, uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8) {
 	switch (irq) {
@@ -31,7 +35,7 @@ void int_21() {
 	keyboard_handler();
 }
 
-void int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8) {
+int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8) {
 	switch (rdi)
 	{
 	case 1:
@@ -41,8 +45,33 @@ void int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8)
 	case 2:
 		sys_read((char*)rsi, rdx, rcx);
 		break;
+
+	case 11:
+		 return getBuffPosition();
+		 break;
+
+	case 12:
+		return getBuffCharAt(rsi);
+		break;
+
+	case 15:
+		changeSize(rsi);
+		break;
+	
+	case 16:
+		zoomOut();
+		break;
+	
+	// case 16:
+	// 	drawWordColorAt(rsi, (char*)rdx, rcx, r8);
+	// 	break;
+	
+	// case 17:
+	// 	characterAt(rsi, (char)rdx, rcx, r8);
+	// 	break;
 	
 	default:
-		break;
+		return 0;
 	}
+	return 0;
 }

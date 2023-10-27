@@ -1,5 +1,8 @@
 GLOBAL call_sys_write
 GLOBAL call_sys_read
+GLOBAL call_getBufferPosition
+GLOBAL call_getCharAt
+GLOBAL call_setFontSize
 
 section .text
 
@@ -22,3 +25,11 @@ call_sys_write:
     call_to_handler 1
 call_sys_read:
     call_to_handler 2
+call_getBufferPosition:
+    call_to_handler 11
+call_getCharAt:
+    call_to_handler 12
+call_setFontSize:
+    call_to_handler 15
+call_sys_zoomOut:
+    call_to_handler 16
