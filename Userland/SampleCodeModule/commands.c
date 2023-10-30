@@ -1,132 +1,129 @@
+#include "commands.h"
+#include "UserSyscalls.h"
+#include "stdint.h"
+#include "utils.h"
+// #include "pong.h"
+// #include "funcAsm.h"
+#include "colors.h"
+#include "shell.h"
+static char command_list[COMMAND_LEN][10] = {"HELP", "TIME", "REGSTATE","PONG", "SETCOLOR","DIV0", "INVALOP", "BOKE"};
 
+//busca el comando en la lista de comandos y llama a la funcion correspondiente
+void __seek_command__(char * command){
+    
 
-
-char buff[BUFFER_SIZE];
-uint16_t indexBuff = 0;
-
-uint16_t screen[BUFFER_SIZE];
-uint16_t indexScreen = 0;
-
-int circularBuffer = 0;             // flag to check if the buffer reached its end
-
-void help();
-void div0();
-void commandNotFound();
-void clearScreen();
-
-void snake(){
-    drawString(GREEN, "snake");
+    for (int i = 0; i < COMMAND_LEN; i++){
+        if (strcmpspace(command_list[i],command) == 0){
+                __call_command__(i, command);
+                return;
+        }
+    }
+    __call_command__(-1, command);
 }
 
-char *zoomInKey = {0x1D, 0x35};
-char *zoomOutKey = {0x1D, 0x18};
-static char command_list[COMMAND_AMOUNT][COMMAND_LENGTH_MAX] = {"help", "div0", "zoomIn", "zoomOut", "clear", "snake","" };
-void (*functionPointers[])() = {help, div0, zoomIn, zoomOut, clearScreen, snake, clearBuffer};
+void __call_command__(int i, char * command){
+    switch (i)
+    {
+    case HELP:;
+        help();
+        return;
+    case TIME:;
+        time();
+        return;
+    // case REG_STATE:;
+    //     call_regState();
+    //     return;
+    // case PONG:;
+    //     Pong();
+    //     __shell_init__();    
+    //     return;
+    case SETCOLOR:;
+        setbg(command);
+        return;
+    // case DIV0:;
+    //     Div0();
+    //     return;
+    // case INVALOP:;
+    //     invalidOp();
+    //     return;
+    // case BOKE:;
+    //     call_boke();
+    //     return;
+    default:;
+        call_sys_write("ERROR - Comando no reconocido",30,2);
+        putC('\n');
+        return;
+    }
+}
 
-void commands(){
-    newline();
-    for(int i = 0; i < COMMAND_AMOUNT; i++){
-        if(strcasecmp(buff, command_list[i]) == 0){
-            functionPointers[i]();
+//imprime la lista de comandos disponibles
+void help(){
+    call_sys_write("Lista de commandos disponibles:\n", 34,1);
+    for (int i = 0; i < COMMAND_LEN; i++){
+        call_sys_write(command_list[i],40,1);
+        call_sys_write("\n",1,1);
+    }
+}
+
+void time(){
+    char timeClock[50];
+    call_timeClock(timeClock);
+    char c;
+    for (int i = 0; (c = timeClock[i]) != 0; i++){
+        putC(c);
+    }
+    putC('\n');
+}
+
+
+void setbgEnum(int i){
+    switch (i){
+        case GREEN_:; call_paintScreen(GREEN);
             return;
+        case BLUE_:; call_paintScreen(BLUE);
+            return;
+        case BLACK_: ;call_paintScreen(BLACK);
+            return;
+        case YELLOW_: ;call_paintScreen(YELLOW);
+            return;
+        case ORANGE_:; call_paintScreen(ORANGE);
+            return;
+        default:
+            return;
+    }
+}
+static char hexArr[COLOR_LEN][10] = {"GREEN","BLUE","BLACK","YELLOW","ORANGE"};
+void findColor(char * color){
+    
+   
+    for (int i = 0; i < COMMAND_LEN; i++){
+        if (strcmp(hexArr[i],color) == 0){
+                setbgEnum(i);
+                return;
         }
     }
-    commandNotFound();
-    return;
+    setbgEnum(-1);
+}
 
-}     
 
-int strcasecmp(const char *str1, const char *str2) {
-    while (*str1 && *str2) {  
-        removeLeadingTrailingSpaces(str1);                  // removes spaces at the beginning and end of the string
-        removeLeadingTrailingSpaces(str2);                  
-        char c1 = *str1;
-        char c2 = *str2;
-
-        // Convert characters to lowercase for comparison
-        if (c1 >= 'A' && c1 <= 'Z') {
-            c1 += 'a' - 'A';
-        }
-        if (c2 >= 'A' && c2 <= 'Z') {
-            c2 += 'a' - 'A';
-        }
-
-        if (c1 != c2) {
-            return c1 - c2;
-        }
-
-        str1++;
-        str2++;
+//setea el color de fondo de la pantalla segun el comando ingresado
+void setbg(char * command){
+    char partition[20];
+    int i=0;
+    for (; !null_or_space(command[i]); i++);
+    i++;
+    int j = 0;
+    for (; command[i] != '\0'; i++){
+        partition[j++]=command[i];
     }
-
-    // Compare the lengths of the strings
-    return (*str1 - *str2);
+    partition[j]=0;
+    findColor(partition);
 }
-
-void removeLeadingTrailingSpaces(char* str) {
-    if (str == NULL) {
-        return; // Handle NULL input
-    }
-
-    char* start = str;
-    char* end = str;
-
-    // Find the end of the string
-    while (*end != '\0') {
-        end++;
-    }
-    end--; // Move back from the null terminator
-
-    // Remove trailing spaces
-    while (end >= str && (*end == ' ' || *end == '\t')) {
-        end--;
-    }
-
-    // Null-terminate the new string
-    *(end + 1) = '\0';
-
-    // Find the first non-space character from the beginning
-    start = str;
-    while (*start == ' ' || *start == '\t') {
-        start++;
-    }
-
-    // Shift characters to remove leading spaces
-    while (*start) {
-        *str = *start;
-        str++;
-        start++;
-    }
-
-    *str = '\0'; // Null-terminate the resulting string
+void Div0(){
+    int a = 0;
+    int b = 1;
+     a = b/a;
 }
-
-void zoomOut() {
-    call_sys_zoomOut();
-}
-
-void zoomIn() {
-    call_sys_zoomIn();
-}
-
-void commandNotFound(){
-    drawString(RED, "ERROR: Command ");
-    drawString(RED, buff);
-    drawString(RED, " not found");
-    newline();
-}
-
-void div0(){
-    clear();
-    drawString(RED, "ERROR: CANNOT DIVIDE BY ZERO");
-    newline();
-}
-
-void help() {
-    call_sys_write("estos son los comandos");
-    call_sys_commands();
-}
-
-void clearScreen() {
-    clear();
-}
+// void invalidOp(){
+//     invalidOpAsm();
+// }

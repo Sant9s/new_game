@@ -3,9 +3,10 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-#include <keyboardDriver.h>
 #include <idtLoader.h>
-#include <sysCalls.h>
+#include "drivers/include/videoDriver.h"
+#include "include/interrupts.h"
+#include "include/libasm.h"
 //EN EL MAIN SOLO SE PODRAN INVOCAR FUNCIONES DECLARADAS EN LIB.H Y EN NAIVECONSOLE.H
 //kernel.c va a usar las funciones declaradas en naiveConsole.h y en lib.h
 //en lib.h van a haber funciones que esten directamente implementadas en libasm.asm (funciones basicas), si es que quiero esto

@@ -1,6 +1,9 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef __SHELL_H__
+#define __SHELL_H__
 
-int load_shell(void);
 
-#endif
+#include "utils.h"
+
+int __shell_init__();
+
+#endif /*__SHELL_H__*/

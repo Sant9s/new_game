@@ -74,15 +74,15 @@ SECTION .text
 
 
 
-%macro exceptionHandler 1
-	pushState
+; %macro exceptionHandler 1
+; 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
-	call exceptionDispatcher
+; 	mov rdi, %1 ; pasaje de parametro
+; 	call exceptionDispatcher
 
-	popState
-	iretq
-%endmacro
+; 	popState
+; 	iretq
+; %endmacro
 
 
 _hlt:
@@ -166,8 +166,8 @@ _irq60Handler:
 	iretq
 
 ;Zero Division Exception
-_exception0Handler:
-	exceptionHandler 0
+; _exception0Handler:
+; 	exceptionHandler 0
 
 
 haltcpu:
