@@ -1,80 +1,55 @@
 #include <naiveConsole.h>
 
-//DECLARO EL PROTOTIPO DE TODAS LAS FUNCIONES DE ASSEMBLER QUE NECESITE
-//IMPLEMENTO TODAS LAS FUNCIONES AUXILIARES NECESARIAS
-//IMPLEMENTO LA "FUNCION PRINCIPAL" QUE UTILIZA LAS FUNCIONES ANTERIORES,
-//ESTA VA A SER LA UNICA QUE PODRA SER INVOCADA EN EL MAIN DEL KERNEL.C
-
-uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
 static char buffer[64] = { '0' };
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static const uint32_t width = 80;
 static const uint32_t height = 25 ;
+#define deafultcolor 0x0f
+#define defaultback 0x00
 
-//EJ1
-//implemento las funciones print de naiveConsole.h
-//no utilizan funciones de la libasm.asm
-#define defaultColor 0x07
-#define defaultBack 0x00
-
-/*
-static void scroll() {
-	if (currentVideo >= video + 2*width*(height-1)) {
-		for (int i = 0; i < 2*width*(height-1); i++) {
-			video[i] = video[i + 2*width];
-		}
-	}
-	currentVideo -= 2*width;
-	for (int j = 0; j < width; j++) {
-		currentVideo[j*2] = ' ';
-		currentVideo[2*j+1] = 0x07;
-	}
-}
-*/
-
-static uint8_t makeColor(char foreground, char background) {
-    return (uint8_t)(foreground | background << 4);
-}
-
-void ncPrintCharColor(char character, char foreground, char background)
-{
-    *currentVideo = character;
-
-	currentVideo++;
-
-	*currentVideo = makeColor(foreground, background);
-    currentVideo++;
-}
-
-void ncPrintColor(const char * string, char foreground, char background)
-{
-    int i;
-    
-    for (i = 0; string[i] != 0; i++)
-        ncPrintCharColor(string[i], foreground, background);
-}
-
-//fin EJ1
-
-void ncBackspace() {
-	if((uintptr_t)currentVideo >= 0xB8002){ // si no es el primer caracter
+//borra el ultimo caracter
+void ncBackspace(){
+	if(*currentVideo>=0xB8002){ // si no es el primer caracter
 		currentVideo -= 2;
 		*currentVideo = ' ';
 	}
 }
 
+//imprime un string
 void ncPrint(const char * string)
 {
-    ncPrintColor(string, defaultColor, defaultBack);
+	int i;
+
+	for (i = 0; string[i] != 0; i++)
+		ncPrintChar(string[i]);
+}
+//imprime un string con un color de letra y de fondo
+void ncPrintColor(const char * string, char color, char back){
+	int i;
+	for (i = 0; string[i] != 0; i++)
+		ncPrintCharColor(string[i], color, back);
+
+}
+
+//imprime un caracter con un color de letra y de fondo
+void ncPrintCharColor(char character, char color, char back){
+	
+	*currentVideo = character;
+	char font = color | back;   
+	currentVideo++;
+	*currentVideo = font;  
+	currentVideo++;
+	
+
 }
 
 void ncPrintChar(char character)
 {
-    ncPrintCharColor(character, defaultColor, defaultBack);
+	
+	ncPrintCharColor(character, deafultcolor, defaultback);
 }
-
 
 void ncNewline()
 {
@@ -115,7 +90,8 @@ void ncClear()
 	currentVideo = video;
 }
 
-uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
+//convierte un entero a una base dada y lo guarda en un buffer
+ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 {
 	char *p = buffer;
 	char *p1, *p2;
@@ -148,11 +124,6 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 	return digits;
 }
 
-//EJ3
-//declaro los prototipos de las funciones de assembler, estas no son accedidas por el main del kernel.c
-//luego creo las funciones auxiliares, que tampoco pueden ser accedidas
-//ninguna de estas pueden ser accedidas pues no estan declaradas en naiveConsole.h
-//por ultimo implemento la funcion principal que es usada en kernel.c, pues esta declarada en naiveConsole.h
 int get_hours();
 int get_minutes();
 int get_seconds();
@@ -163,7 +134,6 @@ int get_year();
 
 void convertToGMTMinus3(int *hours, int *days, int *month, int *year) {
     int daysInMonth[] = {31,28,31,30,31,30,31,31,30,31,30,31};
-	
     int monthDays = daysInMonth[(*month - 1) % 12];
 	
     if ( *year % 4 == 0 && (*year % 100 != 0 || *year % 400 == 0)) {
@@ -186,8 +156,7 @@ void convertToGMTMinus3(int *hours, int *days, int *month, int *year) {
 }
 
  
-char * TimeClock(){
-	static char buffer[121];
+char * TimeClock(char * buffer){
 	char * days[]={"sun", "lun", "mar", "mie", "jue", "vie", "sab"};
 	int  hours = get_hours();
 	int  minutes = get_minutes();
@@ -215,5 +184,3 @@ char * TimeClock(){
 	buffer[digits] = 0;
 	return buffer;
 }
-
-//fin EJ3

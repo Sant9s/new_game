@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #define DEFAULT_CHAR_HEIGHT = 16
-#define DEFAULT_CHAR_WIDTH 8
+#define DEFAULT_CHAR_WIDTH = 8
 
 
 const char font[] = {

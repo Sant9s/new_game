@@ -4,12 +4,12 @@
 #include "naiveConsole.h"
 #include "include/interrupts.h"
 #include "include/exceptions.h"
-//#include "registers.h"
+#include "registers.h"
 #include "drivers/include/videoDriver.h"
 #include "keyboard_buffer.h"
 #include "include/lib.h"
 #include "time.h"
-//#include "drivers/include/soundDriver.h"
+#include "drivers/include/soundDriver.h"
 #include "drivers/include/keyboard_driver.h"
 #include "syscalls.h"
 
@@ -57,9 +57,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 3:
 		TimeClock((char*)rsi);
 		break;
-	// case 4:
-	// 	printRegAsm();
-	// 	break;
+	case 4:
+		printRegAsm();
+		break;
 	case 5:
 		paintScreen((uint64_t)rsi);
 		break;
@@ -84,9 +84,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 12:
 		return getCharAt(rsi);
 		break;
-	// case 13:
-	// 	sleepms(rsi);
-	// 	break;
+	case 13:
+		sleepms(rsi);
+		break;
 	case 14:
 		return ticks_elapsed();
 		break;
@@ -99,9 +99,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 17:
 		characterAt(rsi, (char)rdx, rcx, r8);
 		break;
-	// case 18:
-	// 	beep(rsi, rdx);
-	// 	break;
+	case 18:
+		beep(rsi, rdx);
+		break;
 	default:
 		return 0;
 	}

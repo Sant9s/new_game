@@ -1,4 +1,7 @@
 #include <stdint.h>
+#include "include/defs.h"
+#include "include/lib.h"
+#include "include/interrupts.h"
 
 void * memset(void * destination, int32_t c, uint64_t length)
 {
@@ -48,3 +51,19 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
+
+
+void sleep(uint32_t seconds) {
+	uint32_t startTime = seconds_elapsed();
+	while (seconds > seconds_elapsed() - startTime) _hlt();
+};
+
+void sleepms(int mseconds) {
+	int startTime = ticks_elapsed();
+	while (mseconds > ticks_elapsed()*18 - startTime*18)_hlt();
+};
+
+void nanoms(int nseconds) {
+	int startTime = ticks_elapsed();
+	while (nseconds > ticks_elapsed()*18000 - startTime*18000)_hlt();
+};

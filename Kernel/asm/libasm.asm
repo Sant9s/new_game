@@ -7,89 +7,35 @@ GLOBAL get_monthDay
 GLOBAL get_month
 GLOBAL get_year
 GLOBAL getKey
-
-
-;AQUI VAN TODAS LAS FUNCIONES DE ASSEMBLER
-
+GLOBAL inb
+GLOBAL outb
+GLOBAL kbflag
+GLOBAL load_settings
 section .text
 
-;macro para armar stack
 %macro enter_func 0
-	push rbp
-	mov rbp, rsp
+  push rbp
+  mov rbp, rsp
 %endmacro
 
-;macro para desarmar stack
 %macro leave_func 0
-	mov rsp, rbp
-	pop rbp
-	ret
+  mov rsp, rbp
+  pop rbp
 %endmacro
 
-
-;macro para obtener el RTC - Real Time Clock and Memory (ports 70h & 71h)
 %macro get_RTC_val 1
-	;limpio los registros
-	xor rax, rax
-	xor rdi, rdi
-	;mando al RTC el acceso al registro B
-	mov al, 0x0B
-	out 70h, al
-	;obtengo en al el registro B, que es el status
-	in al, 71h 
-	;modifico el bit numero 2 arrancando de derecha a izquierda siendo el de mas a la derecha el bit 0
-	;el bit numero 2 lo pongo en 1 y dejo el resto igual
-	or al, 0x04 
-	;pongo este nuevo status en el seteo del RTC
-	;ahora me va a devolver lo pedido en formato de bits y no hexa
-	out 71h, al
-	;pongo el valor a buscar en al y lo obtengo en al
-	mov al, %1
-	out 70h, al
-	in al, 71h
-	;paso el valor de al, que esta en rax, a rdi
-	;en 64bits se devuelve en rdi
-	mov rdi, rax
+  xor rax, rax
+  xor rdi, rdi
+  mov al, 0x0B
+  out 70h, al
+  in al, 71h 
+  or al, 0x04 
+  out 71h, al
+  mov al, %1
+  out 70h, al
+  in al, 71h
+  mov rdi, rax
 %endmacro
-
-;las siguientes funciones usan macros para
-;armar stack
-;obtener el valor de RTC segun el parametro pasado
-;desarmar el stack
-get_seconds:
-	enter_func
-	get_RTC_val 0
-	leave_func
-
-get_minutes:
-	enter_func
-	get_RTC_val 2
-	leave_func
-
-get_hours:
-	enter_func
-	get_RTC_val 4
-	leave_func
-
-get_weekDay:
-	enter_func
-	get_RTC_val 6
-	leave_func
-
-get_monthDay:
-	enter_func
-	get_RTC_val 7
-	leave_func
-
-get_month:
-	enter_func
-	get_RTC_val 8
-	leave_func
-
-get_year:
-	enter_func
-	get_RTC_val 9
-	leave_func
 
 cpuVendor:
 	push rbp
@@ -115,9 +61,93 @@ cpuVendor:
 	pop rbp
 	ret
 
+get_seconds:
+	enter_func
+	get_RTC_val 0
+	leave_func
+  	ret
+
+get_minutes:
+	enter_func
+	get_RTC_val 2
+	leave_func
+  	ret
+
+get_hours:
+	enter_func
+	get_RTC_val 4
+	leave_func
+  	ret
+
+get_weekDay:
+	enter_func
+	get_RTC_val 6
+	leave_func
+  	ret
+
+get_monthDay:
+	enter_func
+	get_RTC_val 7
+	leave_func
+  	ret
+
+get_month:
+	enter_func
+	get_RTC_val 8
+	leave_func
+  	ret
+
+get_year:
+	enter_func
+	get_RTC_val 9
+	leave_func
+  	ret
 
 getKey:
-  enter_func
-   mov rax, 0
-   in al, 0x60       ; lee la TECLA PRESIONADA desde el puerto 60h
-  leave_func
+  push rbp
+  mov rbp, rsp
+  mov rax, 0
+
+  in al, 0x60       ; lee la TECLA PRESIONADA desde el puerto 60h
+_good:  
+  mov rsp, rbp 
+  pop rbp
+  ret
+
+load_settings:
+	enter_func
+	call set_keySpeed
+	leave_func
+	ret
+set_keySpeed:
+	enter_func
+	in al, 0x64
+	mov al, 0xC2
+	out 0x64, al
+	leave_func
+	ret
+
+inb:				; Funciones para el correcto funcionamiento del soundDriver
+	push rbp
+	mov rbp, rsp
+
+    mov rdx,rdi
+    in al,dx		; pasaje en 8 bits
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+outb:
+	push rbp
+	mov rbp, rsp
+
+    mov rax, rsi    
+    mov rdx, rdi
+	out dx, al		; pasaje en 8 bits
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+           

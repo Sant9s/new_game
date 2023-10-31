@@ -2,8 +2,8 @@
 #include "UserSyscalls.h"
 #include "stdint.h"
 #include "utils.h"
-// #include "pong.h"
-// #include "funcAsm.h"
+#include "pong.h"
+#include "funcAsm.h"
 #include "colors.h"
 #include "shell.h"
 static char command_list[COMMAND_LEN][10] = {"HELP", "TIME", "REGSTATE","PONG", "SETCOLOR","DIV0", "INVALOP", "BOKE"};
@@ -30,25 +30,25 @@ void __call_command__(int i, char * command){
     case TIME:;
         time();
         return;
-    // case REG_STATE:;
-    //     call_regState();
-    //     return;
-    // case PONG:;
-    //     Pong();
-    //     __shell_init__();    
-    //     return;
+    case REG_STATE:;
+        call_regState();
+        return;
+    case PONG:;
+        Pong();
+        __shell_init__();    
+        return;
     case SETCOLOR:;
         setbg(command);
         return;
-    // case DIV0:;
-    //     Div0();
-    //     return;
-    // case INVALOP:;
-    //     invalidOp();
-    //     return;
-    // case BOKE:;
-    //     call_boke();
-    //     return;
+    case DIV0:;
+        Div0();
+        return;
+    case INVALOP:;
+        invalidOp();
+        return;
+    case BOKE:;
+        call_boke();
+        return;
     default:;
         call_sys_write("ERROR - Comando no reconocido",30,2);
         putC('\n');
@@ -124,6 +124,6 @@ void Div0(){
     int b = 1;
      a = b/a;
 }
-// void invalidOp(){
-//     invalidOpAsm();
-// }
+void invalidOp(){
+    invalidOpAsm();
+}
