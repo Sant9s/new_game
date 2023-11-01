@@ -139,6 +139,7 @@ static char ScanCodes[256] = {
 };
 
 static int capsLockOn = 0;
+static int shiftPressed = 0;
 
 void keyboard_handler() {
     uint16_t key = getKey();  // Obtiene el valor de la tecla presionada
@@ -149,6 +150,12 @@ void keyboard_handler() {
     if (key == 0x3A) {
         capsLockOn = 1 - capsLockOn;
     }
+
+    if( key == 0x2A){					// shift make
+		shiftPressed = 1;
+	} else if (key == 0xAA){			// shift break	
+		shiftPressed = 0;
+	}
     
     uint16_t * buff = getBufferAddress();  
     int buff_pos = getBufferPosition();  
@@ -162,18 +169,10 @@ void keyboard_handler() {
         buff[0] = 0;  
     }
     
-    if (capsLockOn && (ScanCodes[key]-('a' - 'A'))>='A' && (ScanCodes[key]-('a' - 'A'))<='Z')
+    if ((capsLockOn || shiftPressed) && !(capsLockOn && shiftPressed) && (ScanCodes[key]-('a' - 'A'))>='A' && (ScanCodes[key]-('a' - 'A'))<='Z')
         buff[buff_pos] = (ScanCodes[key]-('a' - 'A'));  // Almacena el valor de la tecla en el búfer
     else
         buff[buff_pos] = ScanCodes[key];  // Almacena el valor de la tecla en el búfer
-        
-    
-    // Verifica si la tecla presionada es un punto y coma (';')
-    // if (ScanCodes[key] == ';'){
-    //     saveState();  // Guarda el estado actual
-    //     flag_snapshot_taken = 1;  // Establece la bandera indicando que se tomó una instantánea
-    // }
-    
     return; 
 }
 

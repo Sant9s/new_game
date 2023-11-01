@@ -10,7 +10,8 @@
 
 
 
-void __seek_command__(char * command); //Busca el comando ingresado por el usuario
+void checkCommands(char * command); //Busca el comando ingresado por el usuario
+void commandNotFound(char * command);
 void help(); //Imprime la lista de comandos
 void time(); //Imprime la hora actual
 void div0(); //Divide por 0 y genera una excepcion

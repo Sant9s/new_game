@@ -11,14 +11,21 @@ static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV
 void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp};
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente
-void __seek_command__(char * command){
+void checkCommands(char * command){
     for (int i = 0; i < COMMAND_AMOUNT; i++){
         if (strCompare(command_list[i],command) == 0){ 
                 functionPointers[i]();
                 return;
         }
     }
-    putString("ERROR - Command not recognized\n", RED);
+    commandNotFound(command);
+}
+
+void commandNotFound(char * command){
+    putString("ERROR: - '", RED);
+    putString(command, RED);
+    putString("' is not a valid command\n", RED);
+    putString("Type help to show all commands\n", GREEN);
 }
 
 
@@ -26,6 +33,7 @@ void __seek_command__(char * command){
 void help(){
     putString("Commands list:\n", GREEN); 
     for (int i = 0; i < COMMAND_AMOUNT; i++){
+        putString(" - ", GREEN);
         putString(command_list[i], GREEN);
         putNewLine();
     }

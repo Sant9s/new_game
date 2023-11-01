@@ -5,6 +5,6 @@
 
 #include "utils.h"
 
-int __shell_init__();
+int start_shell();
 
 #endif /*__SHELL_H__*/

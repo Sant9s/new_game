@@ -6,29 +6,11 @@
 
 static char buffer[BUFFER_SIZE] = {0};
 
-//Lee linea y la manda a __seek_command__
-void lineRead(char * line){
-    __seek_command__(line);
-    //---
-    clearBuffer();
-}
-
-void putLineStart()
-{   
+void putLine(){   
     putString("user > ", GREEN);
 }
 
-/*
-La función bufferize() lee caracteres de entrada y los almacena en un búfer hasta que se cumplan ciertas condiciones: 
-retroceso (\b), salto de línea (\n) o el búfer alcanza su capacidad máxima. 
-Si se detecta un retroceso, se retrocede una posición en el búfer si es posible. 
-Si se detecta un salto de línea, muestra el caracter en la salida, 
-almacena el búfer en una línea y retorna. 
-En caso contrario, si el búfer no ha alcanzado su capacidad máxima, 
-se almacena el caracter en el búfer y se muestra en la salida. 
-La función finaliza cuando se completa el búfer o no hay más caracteres de entrada.
-*/
-void bufferize (){ 
+void read_buffer(){ 
     int i = 0;
     int end_of_buffer = 0;
     int flag = 0;
@@ -46,18 +28,15 @@ void bufferize (){
                 return;
             }
             buffer[i]=0;
-            lineRead(buffer);
-            return;
-        } else if (c == ';' && i==0) {
-            putString("Registers snapshot taken\n", WHITE);
-            clearBuffer();
+            checkCommands(buffer);
+            clearBuffer(); 
             return;
         } else{
             if (!end_of_buffer)
                 buffer[i++] = c;
             else
                 flag = 1;}
-        if (!flag && c!=';')
+        if (!flag)
             putC(c, GREEN);
         flag = 0;
     }
@@ -69,11 +48,11 @@ void welcome(){
     putString(WELCOME_MESSAGE, GREEN);
 }
 
-int __shell_init__(){
+int start_shell(){
     welcome();
     while (1){
-        putLineStart();
-        bufferize();
+        putLine();
+        read_buffer();
     }
     return 0;
 }
