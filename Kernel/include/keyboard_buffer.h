@@ -10,6 +10,7 @@ struct keyboard_buffer {
     uint16_t buff[BUFF_SIZE];
 };
 
+int getBufferLen();
 int getBufferPosition();
 int setPos(int new_len);
 int getBufferLen();

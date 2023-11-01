@@ -52,18 +52,36 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	return destination;
 }
 
+//convierte un entero a una base dada y lo guarda en un buffer
+ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
+{
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
 
-void sleep(uint32_t seconds) {
-	uint32_t startTime = seconds_elapsed();
-	while (seconds > seconds_elapsed() - startTime) _hlt();
-};
+	//Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = value % base;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
+	}
+	while (value /= base);
 
-void sleepms(int mseconds) {
-	int startTime = ticks_elapsed();
-	while (mseconds > ticks_elapsed()*18 - startTime*18)_hlt();
-};
+	// Terminate string in buffer.
+	*p = 0;
 
-void nanoms(int nseconds) {
-	int startTime = ticks_elapsed();
-	while (nseconds > ticks_elapsed()*18000 - startTime*18000)_hlt();
-};
+	//Reverse string in buffer.
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+
+	return digits;
+}

@@ -2,7 +2,6 @@
 #include <UserSyscalls.h>
 #include <commands.h>
 #include <buffer.h>
-#include "colors.h"
 
 static char buffer[BUFFER_SIZE] = {0};
 
@@ -15,9 +14,7 @@ void lineRead(char * line){
 
 void putLineStart()
 {   
-    char s[] = "O] ";
-    print(s);
-    clearBuffer();
+    putString("> ");
 }
 
 /*
@@ -51,12 +48,16 @@ void bufferize (){
             buffer[i]=0;
             lineRead(buffer);
             return;
+        } else if (c == ';' && i==0) {
+            putString("Registers snapshot taken\n");
+            clearBuffer();
+            return;
         } else{
             if (!end_of_buffer)
                 buffer[i++] = c;
             else
                 flag = 1;}
-        if (!flag)
+        if (!flag && c!=';')
             putC(c);
         flag = 0;
     }
@@ -64,8 +65,7 @@ void bufferize (){
 }
 
 void welcome(){
-    call_paintScreen(BLACK);
-    char WELCOME_MESSAGE[] = "Bienvenido a BOKE.\nIngrese un comando para continuar:\n(Ingrese HELP para ver todos los comandos)\n";
+    char WELCOME_MESSAGE[] = "Welcome to the shell\n";
     for (int j=0; WELCOME_MESSAGE[j] != 0; j++){
         putC(WELCOME_MESSAGE[j]);
     }
@@ -73,6 +73,7 @@ void welcome(){
 
 int __shell_init__(){
     welcome();
+    help();
     while (1){
         putLineStart();
         bufferize();

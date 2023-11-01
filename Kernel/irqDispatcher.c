@@ -9,7 +9,6 @@
 #include "keyboard_buffer.h"
 #include "include/lib.h"
 #include "time.h"
-#include "drivers/include/soundDriver.h"
 #include "drivers/include/keyboard_driver.h"
 #include "syscalls.h"
 
@@ -61,47 +60,10 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 		printRegAsm();
 		break;
 	case 5:
-		paintScreen((uint64_t)rsi);
+		changeSize(1);
 		break;
 	case 6:
-		boke();
-		break;
-	case 7:
-		drawRectangle(rsi, rdx, rcx, r8, r9);
-		break;
-	case 8:
-		drawBall(rsi, rdx, rcx, r8);
-		break;
-	case 9:
-		clearColor(rsi);
-		break;
-	case 10:
-		put_square(rsi, rdx, rcx, r8);
-		break;
-	case 11:
-		 return getBufferPosition();
-		 break;
-	case 12:
-		return getCharAt(rsi);
-		break;
-	case 13:
-		sleepms(rsi);
-		break;
-	case 14:
-		return ticks_elapsed();
-		break;
-	case 15:
-		setFontSize(rsi);
-		break;
-	case 16:
-		drawWordColorAt(rsi, (char*)rdx, rcx, r8);
-		break;
-	case 17:
-		characterAt(rsi, (char)rdx, rcx, r8);
-		break;
-	case 18:
-		beep(rsi, rdx);
-		break;
+		changeSize(-1);
 	default:
 		return 0;
 	}

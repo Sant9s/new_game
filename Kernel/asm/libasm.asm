@@ -114,40 +114,4 @@ _good:
   pop rbp
   ret
 
-load_settings:
-	enter_func
-	call set_keySpeed
-	leave_func
-	ret
-set_keySpeed:
-	enter_func
-	in al, 0x64
-	mov al, 0xC2
-	out 0x64, al
-	leave_func
-	ret
-
-inb:				; Funciones para el correcto funcionamiento del soundDriver
-	push rbp
-	mov rbp, rsp
-
-    mov rdx,rdi
-    in al,dx		; pasaje en 8 bits
-
-	mov rsp, rbp
-	pop rbp
-	ret
-
-outb:
-	push rbp
-	mov rbp, rsp
-
-    mov rax, rsi    
-    mov rdx, rdi
-	out dx, al		; pasaje en 8 bits
-
-	mov rsp, rbp
-	pop rbp
-	ret
-
            

@@ -7,6 +7,7 @@ static buff_ptr ptr = &buff;
 int getBufferPosition(){
     return ptr->bufferPos;
 }
+
 int setPos(int new_pos){
     ptr->bufferPos = new_pos;
     return new_pos;

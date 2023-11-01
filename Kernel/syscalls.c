@@ -1,21 +1,18 @@
-
-#include <naiveConsole.h>
 #include "include/syscalls.h"
 #include "drivers/include/videoDriver.h"
 #include "include/defs.h"
 #include "drivers/include/keyboard_driver.h"
 #include "keyboard_buffer.h"
 #include "include/interrupts.h"
-#include "drivers/include/ScanCodes.h"
 
 
 
 void sys_write(char *buf, int len, int filedescriptor){
 
     switch (filedescriptor){
-        case STDOUT: drawWordLen(buf, len);
+        case STDOUT: drawWord(buf);
             return;
-        case STDERR: drawWordColorLen(RED, buf, len);
+        case STDERR: drawWordColor(RED, buf);
             return;
         default: invalidFd();
     }
@@ -35,7 +32,7 @@ void sys_read( char *buf, int len, int filedescriptor){
                     if (aux == 0x39)
                         buf[i++]=' ';
                     else
-                        buf[i++]=ScanCodes[(int)aux];
+                        buf[i++]=aux;
                     setPos(pos+1);
                 }
                 pos = getBufferPosition();

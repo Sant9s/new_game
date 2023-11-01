@@ -10,5 +10,6 @@ void sleep(uint32_t seconds);
 void sleepms(int mseconds);
 void nanoms(int nseconds);
 char * cpuVendor(char* vendor);
+uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base); //Convierte un numero a la base que se le pase
 
 #endif /* LIB_H */
