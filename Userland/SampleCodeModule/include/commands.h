@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "UserSyscalls.h"
 
-#define COMMAND_LEN 7
+#define COMMAND_LEN 8
 
 enum Commands {
     HELP,
@@ -13,7 +13,8 @@ enum Commands {
     DIV0,
     INVALOP,
     ZOOMOUT,
-    ZOOMIN
+    ZOOMIN,
+    SNAKE
 };
 
 

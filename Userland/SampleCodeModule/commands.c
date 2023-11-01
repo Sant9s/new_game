@@ -4,7 +4,9 @@
 #include "utils.h"
 #include "funcAsm.h"
 #include "shell.h"
-static char command_list[COMMAND_LEN][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN"};
+#include <snake.h>
+
+static char command_list[COMMAND_LEN][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE"};
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente
 void __seek_command__(char * command){
@@ -42,6 +44,10 @@ void __call_command__(int i, char * command){
         return;
     case ZOOMIN:;
         call_zoomIn();
+        return;
+    case SNAKE:;
+        snake();
+        __shell_init__();    
         return;
     default:;
         call_sys_write("ERROR - Command not recognized",30,2);
