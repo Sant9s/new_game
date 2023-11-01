@@ -26,7 +26,7 @@ void snake() {
 	//usleep(speed);
 	//system("clear");
 	putString("\n\n\n\n\t\t\tYour final Score: ", WHITE);
-	printF("%d", score);
+	putInt(score);
 	putString("\n\n\t\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
 	// char c = getC();
 	// while(c != 0);
@@ -59,7 +59,7 @@ void render(void) {
 		putNewLine();
 	}
 	putString("Scored: ", WHITE);
-	printF("%d", score);
+	putInt(score);
 }
 
 void placeFruit(void) {

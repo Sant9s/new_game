@@ -10,8 +10,6 @@ void putC(char c, int color);
 void putString(char * str, int color);
 int strCompare(char * str1, char * str2);
 void removeLeadingTrailingSpaces(char* str);
-int null_or_space(char c);
-int scanF(char * format, ...);
-void printF(const char * format, ...);
 void putNewLine();
+void putInt(int num);
 #endif /* UTILS_H */
