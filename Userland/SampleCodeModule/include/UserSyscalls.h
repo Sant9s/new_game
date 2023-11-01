@@ -1,5 +1,3 @@
-#include "stdint.h"
-
 #ifndef USERSYSCALLS_H
 #define USERSYSCALLS_H
 
