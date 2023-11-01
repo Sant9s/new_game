@@ -8,12 +8,12 @@
 #include <colors.h>
 
 static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE","INVALIDOP"};
-void (*functionPointers[])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp};
+void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp};
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente
 void __seek_command__(char * command){
     for (int i = 0; i < COMMAND_AMOUNT; i++){
-        if (strCompare(command_list[i],command) == 0){
+        if (strCompare(command_list[i],command) == 0){ 
                 functionPointers[i]();
                 return;
         }
