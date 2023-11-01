@@ -6,11 +6,12 @@
 
 
 char getC();
-void putC(char c);
-void putString(char * str);
-int strcmp(char * str1, char * str2);
-int strcmpspace(char * str1, char * str2);
+void putC(char c, int color);
+void putString(char * str, int color);
+int strCompare(char * str1, char * str2);
+void removeLeadingTrailingSpaces(char* str);
 int null_or_space(char c);
 int scanF(char * format, ...);
 void printF(const char * format, ...);
+void putNewLine();
 #endif /* UTILS_H */

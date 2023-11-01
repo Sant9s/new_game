@@ -2,7 +2,7 @@
 // snake game 
 #include <stdlib.h> 
 #include <unistd.h>
-
+#include <colors.h>
 #include <utils.h>
 
 int i, j, height = 20, width = 20; 
@@ -37,25 +37,25 @@ void draw()
 	for (i = 0; i < height; i++) { 
 		for (j = 0; j < width; j++) { 
 			if (i == 0 || i == width - 1 || j == 0 || j == height - 1) { 
-                    putString("#");
+                    putString("#", GREEN);
 			} 
 			else { 
 				if (i == x && j == y) 
-                    putString("0");
+                    putString("0", GREEN);
 				else if (i == fruitx && j == fruity) 
-                    putString("*");
+                    putString("*", GREEN);
 				else
-                    putString(" ");
+                    putString(" ", GREEN);
 			} 
 		} 
-        putString("\n");
+        putString("\n", GREEN);
 	} 
 
 	// Print the score after the 
 	// game ends
     printF("score = %d", score);
-    putString("\n");
-	putString("press X to quit the game");
+    putString("\n", GREEN);
+	putString("press X to quit the game", GREEN);
 }
 
 // Function to take the input 

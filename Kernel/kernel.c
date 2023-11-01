@@ -5,7 +5,7 @@
 #include <naiveConsole.h>
 #include <idtLoader.h>
 #include "drivers/include/videoDriver.h"
-#include "include/interrupts.h"
+#include "include/interrupts.h" 
 #include "include/libasm.h"
 
 extern uint8_t text;

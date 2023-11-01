@@ -1,11 +1,9 @@
 #include <registers.h>
 #include "../drivers/include/videoDriver.h"
-int flag_snapshot_taken = 0;
+#include <interrupts.h>
+
 void printRegisters(registerStructT * registers) {
-	if (flag_snapshot_taken == 0){
-		drawWordColor(RED, "Error - There is not a registers snapshot\nPress(';') to create one\n");
-		return;
-	}
+	saveState();
 	drawWordColor(WHITE, "RIP = ");
 	drawRegisters(registers->rip);
 	drawWordColor(WHITE, "RAX = ");

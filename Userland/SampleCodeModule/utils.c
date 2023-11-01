@@ -3,6 +3,7 @@
 #include <utils.h>
 #include <UserSyscalls.h>
 #include <buffer.h>
+#include <colors.h>
 
 
 int null_or_space(char c){
@@ -11,65 +12,90 @@ int null_or_space(char c){
 
 char getC(){
     char c;
-    call_sys_read(&c, 1, STDIN);
+    call_sys_read(&c, 1, 0);
     return c;
 }
 
-void putC(char c){
-    call_sys_write(&c, 1, STDOUT);
+void putNewLine(){
+    putC('\n', 0);
 }
 
-void putString(char * str){
-    while(*str != '\0'){
-        putC(*str);
-        str++;
-    }
+void putC(char c, int color){
+    call_sys_write(&c, 1, color);
 }
 
-int strcmp(char * str1, char * str2){
-	int i = 0;
-	for (; str1[i] != '\0' && str2[i] != '\0'; i++){
-		if (str1[i] > str2[i]){
-			return 1;
-		} else if (str1[i] < str2[i]){
-			return -1;
-		}
-	}
-	if (str1[i] == '\0' && str2[i] == '\0') {
-        return 0;
-    } else if (str1[i] == '\0') {
-        return -1; 
-    } else return 1;
-
+void putString(char * str, int color){
+    call_sys_write(str, 0, color); 
 }
 
 // Similar a strcmp pero solo compara hasta el primer espacio o el fin de la cadena (lo que ocurra primero)
-int strcmpspace(char * str1, char * str2){
-    char partition[BUFFER_SIZE];
-    int j = 0;
-    for (; str2[j] != '\0' && str2[j] != ' ';j++){
-        partition[j]=str2[j];
-    }
-    partition[j+1]=0;
-	int i = 0;
-	for (; str1[i] != '\0' && !null_or_space(partition[i]); i++){
-		if (str1[i] > str2[i]){
-			return 1;
-		} else if (str1[i] < str2[i]){
-			return -1;
-		}
-	}
-	if (str1[i] == '\0' && null_or_space(partition[i])) {
-        return 0;
-    } else if (null_or_space(partition[i])) {
-        return -1; 
-    } else return 1;
+int strCompare(char * str1, char * str2){ 
+    while (*str1 && *str2) {                    // removes spaces at the beginning and end of the string
+        removeLeadingTrailingSpaces(str2);                  
+        char c1 = *str1;
+        char c2 = *str2;
 
+        // Convert characters to lowercase for comparison
+        if (c1 >= 'A' && c1 <= 'Z') {
+            c1 += 'a' - 'A';
+        }
+        if (c2 >= 'A' && c2 <= 'Z') {
+            c2 += 'a' - 'A';
+        }
+
+        if (c1 != c2) {
+            return c1 - c2;
+        }
+
+        str1++;
+        str2++;
+    }
+
+    // Compare the lengths of the strings
+    return (*str1 - *str2);
+}
+
+void removeLeadingTrailingSpaces(char* str) {
+    if (str == 0) {
+        return; // Handle NULL input
+    }
+
+    char* start = str;
+    char* end = str;
+
+    // Find the end of the string
+    while (*end != '\0') {
+        end++;
+    }
+    end--; // Move back from the null terminator
+
+    // Remove trailing spaces
+    while (end >= str && (*end == ' ' || *end == '\t')) {
+        end--;
+    }
+
+    // Null-terminate the new string
+    *(end + 1) = '\0';
+
+    // Find the first non-space character from the beginning
+    start = str;
+    while (*start == ' ' || *start == '\t') {
+        start++;
+    }
+
+    // Shift characters to remove leading spaces
+    while (*start) {
+        *str = *start;
+        str++;
+        start++;
+    }
+
+    *str = '\0'; // Null-terminate the resulting string
 }
 
 void putInt(int num) {
     if (num < 0) {
-        putC('-');
+        putC('-', GREEN);
         num = -num;
     }
 
@@ -80,7 +106,7 @@ void putInt(int num) {
 
     while (divisor > 0) {
         int digit = num / divisor;
-        putC('0' + digit);
+        putC('0' + digit, GREEN);
         num %= divisor;
         divisor /= 10;
     }
@@ -98,7 +124,7 @@ void printF(const char * format, ...){
             switch(*format){
                 case 'c': {
                     char c = va_arg(args, char*);
-                    putC(c);
+                    putC(c, GREEN);
                     break;
                 }
                 case 'd': {
@@ -108,12 +134,12 @@ void printF(const char * format, ...){
                 }
                 case 's': {
                     char* s = va_arg(args, char*);
-                    putString(s);
+                    putString(s, GREEN);
                     break;
                 }
             }
         } else {
-            putC(*format);
+            putC(*format, GREEN);
         }
         format++;
     }

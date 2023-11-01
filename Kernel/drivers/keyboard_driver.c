@@ -169,10 +169,10 @@ void keyboard_handler() {
         
     
     // Verifica si la tecla presionada es un punto y coma (';')
-    if (ScanCodes[key] == ';'){
-        saveState();  // Guarda el estado actual
-        flag_snapshot_taken = 1;  // Establece la bandera indicando que se tomó una instantánea
-    }
+    // if (ScanCodes[key] == ';'){
+    //     saveState();  // Guarda el estado actual
+    //     flag_snapshot_taken = 1;  // Establece la bandera indicando que se tomó una instantánea
+    // }
     
     return; 
 }

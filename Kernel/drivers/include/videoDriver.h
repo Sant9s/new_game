@@ -9,6 +9,9 @@
 #define WHITE 0xFFFFFF
 #define BLACK 0x000000
 
+#define COLORS (int[]) {GREEN, RED, WHITE, BLUE, BLACK}
+
+
 #define isMinusc(x) ((x)<='a'?(((x)>='z')?1:0):0)
 #define DEFAULT_FONT_SIZE 1
 

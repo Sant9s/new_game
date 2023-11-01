@@ -21,13 +21,11 @@ void exceptionDispatcher(int exception, registerStructT * registers) {
 }
 //excepcion de division por cero
  void zero_division() {
-	flag_snapshot_taken = 1;
 	drawWordColor(RED, "FATAL ERROR: Can not divide by 0");
 	newline();
 }
 //excepcion de codigo invalido
  void invalid_opcode() {
-	flag_snapshot_taken = 1;
 	drawWordColor(RED, "FATAL ERROR: Invalid opcode");
 	newline();
 }

@@ -2,6 +2,7 @@
 #include <UserSyscalls.h>
 #include <commands.h>
 #include <buffer.h>
+#include <colors.h>
 
 static char buffer[BUFFER_SIZE] = {0};
 
@@ -14,7 +15,7 @@ void lineRead(char * line){
 
 void putLineStart()
 {   
-    putString("> ");
+    putString("user > ", GREEN);
 }
 
 /*
@@ -27,8 +28,7 @@ En caso contrario, si el búfer no ha alcanzado su capacidad máxima,
 se almacena el caracter en el búfer y se muestra en la salida. 
 La función finaliza cuando se completa el búfer o no hay más caracteres de entrada.
 */
-void bufferize (){
-    
+void bufferize (){ 
     int i = 0;
     int end_of_buffer = 0;
     int flag = 0;
@@ -40,7 +40,7 @@ void bufferize (){
                 i--;
             else flag = 1;
         } else if (c == '\n'){
-            putC(c);
+            putC(c, GREEN);
             if ( i == 0 ){
                 clearBuffer();
                 return;
@@ -49,7 +49,7 @@ void bufferize (){
             lineRead(buffer);
             return;
         } else if (c == ';' && i==0) {
-            putString("Registers snapshot taken\n");
+            putString("Registers snapshot taken\n", WHITE);
             clearBuffer();
             return;
         } else{
@@ -58,22 +58,19 @@ void bufferize (){
             else
                 flag = 1;}
         if (!flag && c!=';')
-            putC(c);
+            putC(c, GREEN);
         flag = 0;
     }
     return;
 }
 
 void welcome(){
-    char WELCOME_MESSAGE[] = "Welcome to the shell\n";
-    for (int j=0; WELCOME_MESSAGE[j] != 0; j++){
-        putC(WELCOME_MESSAGE[j]);
-    }
+    char * WELCOME_MESSAGE = "Welcome to the shell\nType help to show all commands\n";
+    putString(WELCOME_MESSAGE, GREEN);
 }
 
 int __shell_init__(){
     welcome();
-    help();
     while (1){
         putLineStart();
         bufferize();
