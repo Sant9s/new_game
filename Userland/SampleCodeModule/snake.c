@@ -2,12 +2,12 @@
 // snake game 
 #include <stdlib.h> 
 #include <unistd.h>
-#include <colors.h>
+
 #include <utils.h>
 
-int i, j, height = 20, width = 20; 
-int gameover, score; 
-int x, y, fruitx, fruity, flag; 
+struct snake *Snake;
+struct apple *Apple;
+int dir[2] = {0, -1};
 
 // Function to generate the fruit 
 // within the boundary 
@@ -37,25 +37,25 @@ void draw()
 	for (i = 0; i < height; i++) { 
 		for (j = 0; j < width; j++) { 
 			if (i == 0 || i == width - 1 || j == 0 || j == height - 1) { 
-                    putString("#", GREEN);
+                    putString("#");
 			} 
 			else { 
 				if (i == x && j == y) 
-                    putString("0", GREEN);
+                    putString("0");
 				else if (i == fruitx && j == fruity) 
-                    putString("*", GREEN);
+                    putString("*");
 				else
-                    putString(" ", GREEN);
+                    putString(" ");
 			} 
 		} 
-        putString("\n", GREEN);
+        putString("\n");
 	} 
 
 	// Print the score after the 
 	// game ends
     printF("score = %d", score);
-    putString("\n", GREEN);
-	putString("press X to quit the game", GREEN);
+    putString("\n");
+	putString("press X to quit the game");
 }
 
 // Function to take the input 
