@@ -1,147 +1,98 @@
-// C program to build the complete 
-// snake game 
-#include <stdlib.h> 
-#include <unistd.h>
-
+#include <stdlib.h>
+#include <time.h>
+#include "snake.h"
 #include <utils.h>
 
-struct snake *Snake;
-struct apple *Apple;
-int dir[2] = {0, -1};
+int headX,headY,fruitX,fruitY,width=30,height=30,gameOver=0,direction=2,speeds=0.8i,size=0,score=0,speed=100000;
+int bodyX[30],bodyY[30];
 
-// Function to generate the fruit 
-// within the boundary 
-void setup() 
-{ 
-	gameover = 0; 
+void render(void);
+void setupGame(void);
+void inputCheck(void);
+void moveSnake(void);
+void gameOverCheck(void);
+void placeFruit(void);
+void fruitCheck(void);
 
-	// Stores height and width 
-	x = height / 2; 
-	y = width / 2; 
-label1: 
-    fruitx = 2;
-	//fruitx = rand() % 20; 
-	if (fruitx == 0) 
-		goto label1; 
-label2: 
-    fruity = 2;
-	//fruity = rand() % 20; 
-	if (fruity == 0) 
-		goto label2; 
-	score = 0; 
-} 
-
-// Function to draw the boundaries 
-void draw() 
-{ 
-	for (i = 0; i < height; i++) { 
-		for (j = 0; j < width; j++) { 
-			if (i == 0 || i == width - 1 || j == 0 || j == height - 1) { 
-                    putString("#");
-			} 
-			else { 
-				if (i == x && j == y) 
-                    putString("0");
-				else if (i == fruitx && j == fruity) 
-                    putString("*");
-				else
-                    putString(" ");
-			} 
-		} 
-        putString("\n");
-	} 
-
-	// Print the score after the 
-	// game ends
-    printF("score = %d", score);
-    putString("\n");
-	putString("press X to quit the game");
+int snake(){
+	int game_over = 0;
+	int T = 0;
+	int score = 0, length = 0, digestion = 0, movimientos = 0; 
+	char tecla = 0;
+	srand(time(NULL));
+	
+	//system("cls"); //clearScreen
+	imprimir_Escenario();
+	crear_Serpiente();
+	crear_Manzana();
+	imprimir_Serpiente(Snake);
+	imprimir_Manzana();
+	//Bucle de juego:
+	while(!game_over){;
+		char c = getC();
+		if(c != '0'){
+			//dir[0]=(tecla == DERECHA)-(tecla == IZQUIERDA);
+			//dir[1]=(tecla == ABAJO)-(tecla == ARRIBA);
+			switch(c){
+				case ARRIBA:
+					Snake->AP = LENGUA_UP;
+					dir[0]=0;
+					dir[1]=-1;
+					break;
+				case ABAJO:
+					Snake->AP = LENGUA_DOWN;
+					dir[0]=0;
+					dir[1]=1;
+					break;
+				case DERECHA:
+					Snake->AP = LENGUA_RIGHT;
+					dir[0]=1;
+					dir[1]=0;
+					break;
+				case IZQUIERDA:
+					Snake->AP = LENGUA_LEFT;
+					dir[0]=-1;
+					dir[1]=0;
+					break;
+				default:
+					break;
+			}
+		}		
+		//Sleep(FRAMERATE);
+		T+=FRAMERATE;
+		if(T>=SPEED){
+			imprimir_Serpiente2(Snake);
+			imprimir_Manzana();
+			gotoxy(XBOUND, YBOUND-1);
+			putString("SCORE: ");
+			printF("%d", score);
+			//printf("SCORE: %d", score);
+			mover_Serpiente(Snake->X+dir[0],Snake->Y+dir[1], Snake);
+			game_over = collision_Tablero() + collision_Self(Snake->next) + (tecla == ESC);
+			if(!digestion){
+				if(collision_Apple(Snake)){
+					score += Apple->PUNTOS;
+					digestion = 1;
+					movimientos += length+1;
+				}
+			}
+			else{
+				if(length < score){
+					if(!movimientos){
+						crecer_Serpiente(Apple->X, Apple->Y, Snake);
+						++length;
+					}
+					else{
+						--movimientos;
+					}
+				}
+				else{
+					reset_Apple();
+					digestion = 0;
+				}
+			}
+			T = 0;
+		}
+	}
+return 0;
 }
-
-// Function to take the input 
-void input() 
-{ 
-    char c = getC();
-    switch (c) { 
-    case 'a': 
-        flag = 1; 
-        break; 
-    case 's': 
-        flag = 2; 
-        break; 
-    case 'd': 
-        flag = 3; 
-        break; 
-    case 'w': 
-        flag = 4; 
-        break; 
-    case 'x': 
-        gameover = 1; 
-        break; 
-    }
-} 
-
-// Function for the logic behind 
-// each movement 
-void logic() 
-{ 
-	//sleep(0.01); 
-	switch (flag) { 
-	case 1: 
-		y--; 
-		break; 
-	case 2: 
-		x++; 
-		break; 
-	case 3: 
-		y++; 
-		break; 
-	case 4: 
-		x--; 
-		break; 
-	default: 
-		break; 
-	} 
-
-	// If the game is over 
-	if (x < 0 || x > height 
-		|| y < 0 || y > width) 
-		gameover = 1; 
-
-	// If snake reaches the fruit 
-	// then update the score 
-	if (x == fruitx && y == fruity) { 
-	label3:
-        fruitx = 2;
-		//fruitx = rand() % 20; 
-		if (fruitx == 0) 
-			goto label3; 
-
-	// After eating the above fruit 
-	// generate new fruit 
-	label4: 
-        fruity = 2;
-		//fruity = rand() % 20; 
-		if (fruity == 0) 
-			goto label4; 
-		score += 10; 
-	} 
-} 
-
-// Driver Code 
-void snake() 
-{ 
-	//int m, n; 
-
-	// Generate boundary 
-	setup(); 
-
-	// Until the game is over 
-	while (!gameover) { 
-
-		// Function Call 
-		draw(); 
-		input(); 
-		logic(); 
-	} 
-} 
