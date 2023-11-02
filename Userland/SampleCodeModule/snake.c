@@ -1,8 +1,18 @@
 #include <utils.h>
 #include <colors.h>
+#include <UserSyscalls.h>
 
-int headX,headY,fruitX,fruitY,width=30,height=30,gameOver=0,direction=2,speeds=0.8i,size=0,score=0,speed=100000;
-int bodyX[30],bodyY[30];
+int headX, headY, fruitX, fruitY;
+int width=30;
+int height=30;
+int gameOver=0;
+int direction=2;
+int speeds=0.8i;
+int size=0;
+int score=0;
+int speed=100000;
+int bodyX[30];
+int bodyY[30];
 
 void render(void);
 void setupGame(void);
@@ -21,20 +31,20 @@ void snake() {
 		moveSnake();
 		fruitCheck();
 		gameOverCheck();
-		//usleep(speed);
+		call_sleepms(speed);
   	}
-	//usleep(speed);
-	//system("clear");
+	call_sleepms(speed);
+	call_clear();
 	putString("\n\n\n\n\t\t\tYour final Score: ", WHITE);
 	putInt(score);
 	putString("\n\n\t\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
 	// char c = getC();
 	// while(c != 0);
-	//system("clear");
+	call_clear();
 }
 
 void render(void) {
-	//system("clear");
+	call_clear();
 	int i,j,k,p;
 	for(j=0;j<=height;j++) {
 		for(i=0;i<=width;i++) {

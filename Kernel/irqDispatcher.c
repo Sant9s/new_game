@@ -53,17 +53,31 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 2:
 		sys_read((char*)rsi, rdx, rcx);
 		break;
+
 	case 3:
 		TimeClock((char*)rsi);
 		break;
+
 	case 4:
 		printRegAsm();
 		break;
+
 	case 5:
 		changeSize(1);
 		break;
+
 	case 6:
 		changeSize(-1);
+		break;
+
+	case 7:
+		sleepms(rsi);
+		break;
+
+	case 8:
+		clear();
+		break;
+
 	default:
 		return 0;
 	}

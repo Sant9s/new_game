@@ -21,5 +21,6 @@ void drawWordColor(uint64_t hexColor, char* word);
 void drawWord(char* word);
 void invalidFd(); //indica que el filedescriptor es invalido
 void drawRegisters(int value);
+void clear();
 
 #endif /* _VIDEO_DRIVER_H */

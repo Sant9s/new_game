@@ -4,6 +4,8 @@ GLOBAL call_timeClock
 GLOBAL call_regState
 GLOBAL call_zoomOut
 GLOBAL call_zoomIn
+GLOBAL call_sleepms
+GLOBAL call_clear
 
 section .text
 
@@ -34,3 +36,7 @@ call_zoomOut:
     call_to_handler 5
 call_zoomIn:
     call_to_handler 6
+call_sleepms:
+    call_to_handler 7
+call_clear:
+    call_to_handler 8

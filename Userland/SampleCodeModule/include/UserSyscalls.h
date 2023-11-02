@@ -11,4 +11,6 @@ void call_timeClock(char *buf);
 void call_regState();
 void call_zoomOut();
 void call_zoomIn();
+void call_sleepms(int mseconds);
+void call_clear();
 #endif /* USERSYSCALLS_H */

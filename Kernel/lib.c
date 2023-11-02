@@ -85,3 +85,8 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return digits;
 }
+
+void sleepms(int mseconds) {
+	int startTime = ticks_elapsed();
+	while (mseconds > ticks_elapsed()*18 - startTime*18)_hlt();
+};
