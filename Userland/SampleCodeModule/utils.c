@@ -24,11 +24,9 @@ void putString(char * str, int color){
     call_sys_write(str, 0, color); 
 }
 
-// Similar a strcmp pero solo compara hasta el primer espacio o el fin de la cadena (lo que ocurra primero)
-int strCompare(char * str1, char * str2){ 
-    // removeLeadingTrailingSpaces(str2);  
-    while (*str1 && *str2) {                    // removes spaces at the beginning and end of the string
-                        
+
+int strCompare(char * str1, char * str2){   
+    while (*str1 && *str2) {                       
         char c1 = *str1;
         char c2 = *str2;
 
@@ -51,44 +49,6 @@ int strCompare(char * str1, char * str2){
     // Compare the lengths of the strings
     return (*str1 - *str2);
 }
-
-// void removeLeadingTrailingSpaces(char* str) {
-//     if (str == 0) {
-//         return; // Handle NULL input
-//     }
-
-//     char* start = str;
-//     char* end = str;
-
-//     // Find the end of the string
-//     while (*end != '\0') {
-//         end++;
-//     }
-//     end--; // Move back from the null terminator
-
-//     // Remove trailing spaces
-//     while (end >= str && (*end == ' ' || *end == '\t')) {
-//         end--;
-//     }
-
-//     // Null-terminate the new string
-//     *(end + 1) = '\0';
-
-//     // Find the first non-space character from the beginning
-//     start = str;
-//     while (*start == ' ' || *start == '\t') {
-//         start++;
-//     }
-
-//     // Shift characters to remove leading spaces
-//     while (*start) {
-//         *str = *start;
-//         str++;
-//         start++;
-//     }
-
-//     *str = '\0'; // Null-terminate the resulting string
-// }
 
 void removePreviousSpaces(char *str) {
     if (str == NULL) {
