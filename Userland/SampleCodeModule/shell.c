@@ -29,9 +29,9 @@ void read_buffer(){
         char c = getC();
         end_of_buffer = (i == BUFFER_SIZE-1);
         if (c == '\b'){
-            if ( i > 0)
+            if ( i > 0 && screenIndx > 0){
                 i--;
-            if (screenIndx > 0){
+                screen[screenIndx--] = 0;
                 screen[screenIndx--] = 0;
             }
             else flag = 1;
