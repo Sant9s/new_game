@@ -22,9 +22,9 @@ void checkCommands(char * command){
 }
 
 void commandNotFound(char * command){
-    putString("ERROR: - '", RED);
-    putString(command, RED);
-    putString("' is not a valid command\n", RED);
+    putString("ERROR: - '", GREEN);
+    putString(command, GREEN);
+    putString("' is not a valid command\n", GREEN);
     putString("Type help to show all commands\n", GREEN);
 }
 

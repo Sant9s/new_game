@@ -4,6 +4,7 @@
 #include <colors.h>
 
 
+
 char getC(){
     char c;
     call_sys_read(&c, 1, 0);
