@@ -22,10 +22,6 @@ void checkCommands(char * command){
     commandNotFound(command);
 }
 
-void test(){
-    clearScreen();
-}
-
 void commandNotFound(char * command){
     putString("ERROR: - '", RED);
     putString(command, RED);
