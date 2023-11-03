@@ -128,3 +128,11 @@ void putInt(int num) {
     }
 }
 
+void putCursor(){
+    call_cursor();
+}
+
+void removeCursor(){
+    call_delete_cursor();
+}
+

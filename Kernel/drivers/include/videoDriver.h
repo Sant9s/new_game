@@ -22,5 +22,8 @@ void drawWord(char* word);
 void invalidFd(); //indica que el filedescriptor es invalido
 void drawRegisters(int value);
 void clear();
+void drawCursor();
+void deleteCursor();
+
 
 #endif /* _VIDEO_DRIVER_H */

@@ -15,4 +15,6 @@ void removePreviousSpaces(char* str);
 void removeEndingSpaces(char* str);
 void putNewLine();
 void putInt(int num);
+void putCursor();
+void removeCursor();
 #endif /* UTILS_H */
