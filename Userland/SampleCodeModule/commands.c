@@ -7,8 +7,8 @@
 #include <snake.h>
 #include <colors.h>
 
-static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE","INVALIDOP"};
-void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp};
+static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE","INVALIDOP", "CLEAR"};
+void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp, clearScreen};
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente
 void checkCommands(char * command){
@@ -20,6 +20,10 @@ void checkCommands(char * command){
         }
     }
     commandNotFound(command);
+}
+
+void test(){
+    clearScreen();
 }
 
 void commandNotFound(char * command){

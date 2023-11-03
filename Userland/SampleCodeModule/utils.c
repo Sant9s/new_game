@@ -24,6 +24,9 @@ void putString(char * str, int color){
     call_sys_write(str, 0, color); 
 }
 
+void clearScreen(){
+    call_clear();
+}
 
 int strCompare(char * str1, char * str2){   
     while (*str1 && *str2) {                       

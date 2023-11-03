@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "UserSyscalls.h"
 
-#define COMMAND_AMOUNT 9
+#define COMMAND_AMOUNT 10
 
 
 
