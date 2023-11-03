@@ -83,6 +83,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 10:
 		deleteCursor();
 		break;
+	case 11:
+		clearScreen();
+		break;
 
 	default:
 		return 0;

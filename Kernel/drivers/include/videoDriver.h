@@ -15,7 +15,7 @@
 #define isMinusc(x) ((x)<='a'?(((x)>='z')?1:0):0)
 #define DEFAULT_FONT_SIZE 1
 
-void changeSize(uint32_t new_size);
+void changeSize(double new_size);
 void newline();
 void drawWordColor(uint64_t hexColor, char* word);
 void drawWord(char* word);
@@ -24,6 +24,7 @@ void drawRegisters(int value);
 void clear();
 void drawCursor();
 void deleteCursor();
+void clearScreen();
 
 
 #endif /* _VIDEO_DRIVER_H */

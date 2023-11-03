@@ -5,10 +5,20 @@
 #include <colors.h>
 
 static char buffer[BUFFER_SIZE] = {0};
+static char screen[SCREEN_SIZE] = {0};
+int screenIndx = 0;
+int status;
 
 void putLine(){   
     putString("user > ", GREEN);
     putCursor();
+}
+
+void clearScreenArray(){
+    for (int i = 0; i < SCREEN_SIZE; i++){
+        screen[i] = 0;
+    }
+    screenIndx = 0;
 }
 
 void read_buffer(){ 
@@ -21,16 +31,16 @@ void read_buffer(){
         if (c == '\b'){
             if ( i > 0)
                 i--;
+            if (screenIndx > 0){
+                screen[screenIndx--] = 0;
+            }
             else flag = 1;
         } else if (c == '\n'){
             removeCursor();
             putC(c, GREEN);
-            if ( i == 0 ){
-                clearBuffer();
-                return;
-            }
             buffer[i]=0;
-            checkCommands(buffer);
+            if(*buffer != 0) checkCommands(buffer);
+            if(status) putLine();
             clearBuffer(); 
             return;
         } else{
@@ -43,11 +53,28 @@ void read_buffer(){
             putC(c, GREEN);
             putCursor();
         }
-            
         flag = 0;
     }
     return;
 }
+
+void putIntoScreen(char * str){
+    while (*str != 0){
+        if (screenIndx < SCREEN_SIZE)
+        screen[screenIndx++] = *str;
+        str++;
+    }
+}
+
+void showScreen(){
+    call_sys_write(screen,0,0);
+}
+
+void changeStatus(){
+    status = 0;
+}
+
+
 
 void welcome(){
     char * WELCOME_MESSAGE = "Welcome to the shell\nType help to show all commands\n";
@@ -56,8 +83,9 @@ void welcome(){
 
 int start_shell(){
     welcome();
-    while (1){
-        putLine();
+    putLine();
+    status = 1;
+    while (status){
         read_buffer();
     }
     return 0;

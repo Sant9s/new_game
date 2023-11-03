@@ -54,7 +54,7 @@ uint64_t font_color = 0xFFFFFF;
 
 uint32_t cursorX  = 0;
 uint32_t cursorY  = 0;
-uint32_t size = DEFAULT_FONT_SIZE;
+double size = DEFAULT_FONT_SIZE;
 
 unsigned int getMaxHeight() {
 	return SCREEN_HEIGHT;
@@ -141,17 +141,17 @@ void drawChar(uint64_t hexColor, char character) {
     }
 }
 
+void clearScreen(){
+    drawRectangle(bg_color,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    cursorX = 0;
+    cursorY = 0;
+}
+
 void backspace(){
-     if (cursorX > 0) {
-            cursorX -= size*8;
-        } else if (cursorY > 0 && cursorX == 0) { // El cursor está al principio de una línea
-            // Borra el último carácter de la línea anterior
-            cursorY -= size*16;
-            cursorX = getMaxWidth() - size*8; // Establece el cursorX al último carácter de la línea anterior
-            
-        }
-        // uint64_t hex_backspace = bg_color;
-		drawRectangle(bg_color, cursorX, cursorY, size*8, size*16);
+    if (cursorX > size*56) {
+        cursorX -= size*8;
+    }
+	drawRectangle(bg_color, cursorX, cursorY, size*8, size*16);
 }
 
 void newline(){
@@ -162,7 +162,7 @@ void newline(){
 
 void tab(){
     int tabWidth = 15;
-        int spaces = tabWidth - (cursorX / size*8) % tabWidth;
+        int spaces = tabWidth - (cursorX / (int)size*8) % tabWidth;
 
         for (int i = 0; i < spaces; i++) {
             drawChar(WHITE, ' ');
@@ -173,7 +173,7 @@ void tab(){
 
 void moveOneLineUp() {
     char* dst = (char*)(uintptr_t)(VBE_mode_info->framebuffer); // Puntero al framebuffer
-    char* src = dst + VBE_mode_info->pitch * size * 16; // Puntero a la línea de origen
+    char* src = dst + VBE_mode_info->pitch * (int)size * 16; // Puntero a la línea de origen
     uint64_t numBytes = VBE_mode_info->pitch * (VBE_mode_info->height - size * 16); // Cantidad de bytes a copiar
 
     memcpy(dst, src, numBytes); // Copia los bytes desde la línea de origen a la línea de destino
@@ -231,15 +231,11 @@ void drawRegisters(int value){
      newline();
 }
 
-void invalidFd(){
-    drawWordColor(RED, "Invalid file descriptor");
-    return;
-}
-
-void changeSize(uint32_t new_size){
+void changeSize(double new_size){
+    cleanBuffer();
     if ((size + new_size) == 0)
         return;
-    size += new_size;
+    size += new_size; 
 }
 
 void drawCursor(){

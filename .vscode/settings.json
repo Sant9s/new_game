@@ -1,5 +1,7 @@
 {
   "files.associations": {
-    "usersyscalls.h": "c"
+    "usersyscalls.h": "c",
+    "streambuf": "c",
+    "shell.h": "c"
   }
 }
