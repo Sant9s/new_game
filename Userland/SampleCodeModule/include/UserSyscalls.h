@@ -13,4 +13,6 @@ void call_zoomOut();
 void call_zoomIn();
 void call_sleepms(int mseconds);
 void call_clear();
+void call_cursor();
+void call_delete_cursor();
 #endif /* USERSYSCALLS_H */

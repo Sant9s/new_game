@@ -8,6 +8,7 @@ static char buffer[BUFFER_SIZE] = {0};
 
 void putLine(){   
     putString("user > ", GREEN);
+    putCursor();
 }
 
 void read_buffer(){ 
@@ -22,6 +23,7 @@ void read_buffer(){
                 i--;
             else flag = 1;
         } else if (c == '\n'){
+            removeCursor();
             putC(c, GREEN);
             if ( i == 0 ){
                 clearBuffer();
@@ -36,8 +38,12 @@ void read_buffer(){
                 buffer[i++] = c;
             else
                 flag = 1;}
-        if (!flag)
+        if (!flag){
+            removeCursor();
             putC(c, GREEN);
+            putCursor();
+        }
+            
         flag = 0;
     }
     return;

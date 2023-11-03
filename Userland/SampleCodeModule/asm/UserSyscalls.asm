@@ -6,6 +6,8 @@ GLOBAL call_zoomOut
 GLOBAL call_zoomIn
 GLOBAL call_sleepms
 GLOBAL call_clear
+GLOBAL call_cursor
+GLOBAL call_delete_cursor
 
 section .text
 
@@ -40,3 +42,7 @@ call_sleepms:
     call_to_handler 7
 call_clear:
     call_to_handler 8
+call_cursor
+    call_to_handler 9
+call_delete_cursor
+    call_to_handler 10

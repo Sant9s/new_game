@@ -241,3 +241,11 @@ void changeSize(uint32_t new_size){
         return;
     size += new_size;
 }
+
+void drawCursor(){
+    drawRectangle(GREEN, cursorX, cursorY, size*8, size*16);
+}
+
+void deleteCursor(){
+    drawRectangle(bg_color, cursorX, cursorY, size*8, size*16);
+}
