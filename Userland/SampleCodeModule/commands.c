@@ -12,8 +12,9 @@ void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, i
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente
 void checkCommands(char * command){
+    removeLeadingTrailingSpaces(command); 
     for (int i = 0; i < COMMAND_AMOUNT; i++){
-        if (strCompare(command_list[i],command) == 0){ 
+        if (strCompare(command_list[i], command) == 0){ 
                 functionPointers[i]();
                 return;
         }

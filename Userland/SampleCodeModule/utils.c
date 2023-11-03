@@ -26,8 +26,9 @@ void putString(char * str, int color){
 
 // Similar a strcmp pero solo compara hasta el primer espacio o el fin de la cadena (lo que ocurra primero)
 int strCompare(char * str1, char * str2){ 
+    // removeLeadingTrailingSpaces(str2);  
     while (*str1 && *str2) {                    // removes spaces at the beginning and end of the string
-        removeLeadingTrailingSpaces(str2);                  
+                        
         char c1 = *str1;
         char c2 = *str2;
 
@@ -51,43 +52,99 @@ int strCompare(char * str1, char * str2){
     return (*str1 - *str2);
 }
 
-void removeLeadingTrailingSpaces(char* str) {
-    if (str == 0) {
-        return; // Handle NULL input
+// void removeLeadingTrailingSpaces(char* str) {
+//     if (str == 0) {
+//         return; // Handle NULL input
+//     }
+
+//     char* start = str;
+//     char* end = str;
+
+//     // Find the end of the string
+//     while (*end != '\0') {
+//         end++;
+//     }
+//     end--; // Move back from the null terminator
+
+//     // Remove trailing spaces
+//     while (end >= str && (*end == ' ' || *end == '\t')) {
+//         end--;
+//     }
+
+//     // Null-terminate the new string
+//     *(end + 1) = '\0';
+
+//     // Find the first non-space character from the beginning
+//     start = str;
+//     while (*start == ' ' || *start == '\t') {
+//         start++;
+//     }
+
+//     // Shift characters to remove leading spaces
+//     while (*start) {
+//         *str = *start;
+//         str++;
+//         start++;
+//     }
+
+//     *str = '\0'; // Null-terminate the resulting string
+// }
+
+void removePreviousSpaces(char *str) {
+    if (str == NULL) {
+        return;                 // check if NULL
     }
 
-    char* start = str;
-    char* end = str;
-
-    // Find the end of the string
-    while (*end != '\0') {
-        end++;
+    // Find first index that is not a space
+    int indexNoSpaces = 0;
+    int flag = 0;
+    while (str[indexNoSpaces] == ' ' || str[indexNoSpaces] == '\t') {
+        indexNoSpaces++;
+        if(!flag){
+            flag = 1;
+        }
     }
-    end--; // Move back from the null terminator
-
-    // Remove trailing spaces
-    while (end >= str && (*end == ' ' || *end == '\t')) {
-        end--;
+    if(flag){
+        // Removes spaces from str
+        int i = 0;
+        while (str[indexNoSpaces]) {
+            str[i] = str[indexNoSpaces];
+            i++;
+            indexNoSpaces++;
+        }
+        str[i] = '\0';      // NULL character at the end of string
     }
-
-    // Null-terminate the new string
-    *(end + 1) = '\0';
-
-    // Find the first non-space character from the beginning
-    start = str;
-    while (*start == ' ' || *start == '\t') {
-        start++;
-    }
-
-    // Shift characters to remove leading spaces
-    while (*start) {
-        *str = *start;
-        str++;
-        start++;
-    }
-
-    *str = '\0'; // Null-terminate the resulting string
+    
 }
+
+void removeEndingSpaces(char *str){
+     if (str == NULL) {
+        return; // Return if the input string is NULL
+    }
+
+    int length = 0;
+    int i = 0;
+
+    // Find the length of the string
+    while (str[i] != '\0') {
+        length++;
+        i++;
+    }
+
+    i = length - 1;
+
+    // Find the index of the last non-space character
+    while (i >= 0 && str[i] == ' ') {
+        str[i] = '\0';
+        i--;
+    }
+}
+
+void removeLeadingTrailingSpaces(char* str) {
+    removePreviousSpaces(str);
+    removeEndingSpaces(str);
+}
+    
 
 void putInt(int num) {
     if (num < 0) {
@@ -107,3 +164,4 @@ void putInt(int num) {
         divisor /= 10;
     }
 }
+
