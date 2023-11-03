@@ -1,16 +1,15 @@
 #include "commands.h"
 #include "UserSyscalls.h"
-#include "stdint.h"
 #include "utils.h"
 #include "funcAsm.h"
-#include "shell.h"
+#include "include/shell.h"
 #include <snake.h>
 #include <colors.h>
 
-static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE","INVALIDOP"};
+static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE","INVALIDOP", "EXIT"};
 void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, call_zoomIn, call_zoomOut, snake, invalidOp};
 
-//busca el comando en la lista de comandos y llama a la funcion correspondiente
+//busca el comando en la lista de comandos y llama a la funcion correspondiente 
 void checkCommands(char * command){
     for (int i = 0; i < COMMAND_AMOUNT; i++){
         if (strCompare(command_list[i],command) == 0){ 

@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "UserSyscalls.h"
 
-#define COMMAND_AMOUNT 9
+#define COMMAND_AMOUNT 10
 
 
 
@@ -16,5 +16,6 @@ void help(); //Imprime la lista de comandos
 void time(); //Imprime la hora actual
 void div0(); //Divide por 0 y genera una excepcion
 void invalidOp(); //Genera una excepcion de operacion invalida
+void exitShell();
 
 #endif /*__COMMANDS_H__*/
