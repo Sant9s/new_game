@@ -20,5 +20,6 @@ void clearScreen();
 void zoomIn();
 void zoomOut();
 void exitShell();
+void play_snake();
 
 #endif /*__COMMANDS_H__*/

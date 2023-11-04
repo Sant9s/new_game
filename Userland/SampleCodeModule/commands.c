@@ -7,7 +7,7 @@
 #include <colors.h>
 
 static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE", "CLEAR","EXIT"};
-void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, zoomOut, zoomIn, snake, clearScreen, exitShell};
+void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell};
 
 //busca el comando en la lista de comandos y llama a la funcion correspondiente 
 void checkCommands(char * command){
@@ -83,3 +83,23 @@ void exitShell(){
     putC('.',RED);
     changeStatus();
 }
+
+void play_snake(){
+    char c;
+    int flag = 1;
+    while (flag){
+        putNewLine();
+        putString("Type 1 for 1 player or type 2 for 2 players: ", GREEN);
+        c = getC();
+        if (c == '1'){
+            flag = 0;
+            snake();
+        }
+        if (c == '2'){
+            flag = 0;
+            //snake multiplayer
+        }
+        if (flag) putString(" Error", RED);
+    }
+ }
+    
