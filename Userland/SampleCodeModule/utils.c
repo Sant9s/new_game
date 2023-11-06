@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <stdarg.h>
 #include <utils.h>
 #include <UserSyscalls.h>
 #include <buffer.h>
 #include <colors.h>
+
 
 
 char getC(){
@@ -18,14 +17,12 @@ void putNewLine(){
 
 void putC(char c, int color){
     call_sys_write(&c, 1, color);
+    putIntoScreen(&c);
 }
 
 void putString(char * str, int color){
     call_sys_write(str, 0, color); 
-}
-
-void clearScreen(){
-    call_clear();
+    putIntoScreen(str);
 }
 
 int strCompare(char * str1, char * str2){   

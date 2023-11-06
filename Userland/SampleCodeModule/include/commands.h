@@ -16,6 +16,10 @@ void help(); //Imprime la lista de comandos
 void time(); //Imprime la hora actual
 void div0(); //Divide por 0 y genera una excepcion
 void invalidOp(); //Genera una excepcion de operacion invalida
+void clearScreen();
+void zoomIn();
+void zoomOut();
 void exitShell();
+void play_snake();
 
 #endif /*__COMMANDS_H__*/

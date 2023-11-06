@@ -8,6 +8,7 @@ GLOBAL call_sleepms
 GLOBAL call_clear
 GLOBAL call_cursor
 GLOBAL call_delete_cursor
+GLOBAL call_clear_screen
 
 section .text
 
@@ -46,3 +47,5 @@ call_cursor
     call_to_handler 9
 call_delete_cursor
     call_to_handler 10
+call_clear_screen
+    call_to_handler 11

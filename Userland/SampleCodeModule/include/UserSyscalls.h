@@ -15,4 +15,5 @@ void call_sleepms(int mseconds);
 void call_clear();
 void call_cursor();
 void call_delete_cursor();
+void call_clear_screen();
 #endif /* USERSYSCALLS_H */

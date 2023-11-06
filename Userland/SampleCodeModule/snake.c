@@ -10,9 +10,10 @@ int direction=2;
 int speeds=0.8i;
 int size=0;
 int score=0;
-int speed=100000;
-int bodyX[30];
-int bodyY[30];
+int speed=50;
+int bodyX[100];
+int bodyY[100];
+int seed_count = 0;
 
 void render(void);
 void setupGame(void);
@@ -20,68 +21,93 @@ void inputCheck(void);
 void moveSnake(void);
 void gameOverCheck(void);
 void placeFruit(void);
+void renderFrame();
 void fruitCheck(void);
+int custom_rand();
 
 void snake() {
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
+		clearScreen();
 		render();
 		inputCheck();
 		moveSnake();
-		fruitCheck();
 		gameOverCheck();
+		fruitCheck();
 		call_sleepms(speed);
   	}
-	call_sleepms(speed);
-	call_clear();
-	putString("\n\n\n\n\t\t\tYour final Score: ", WHITE);
+	call_sleepms(1500);
+	call_clear_screen();
+	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
 	putInt(score);
-	putString("\n\n\t\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
-	// char c = getC();
-	// while(c != 0);
-	call_clear();
+	putString("\n\n\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
 }
 
+
 void render(void) {
-	call_clear();
-	int i,j,k,p;
-	for(j=0;j<=height;j++) {
-		for(i=0;i<=width;i++) {
-			p=1;
-			if(i==0||j==0||j==height||i==width)
-				putString("*", WHITE);
-			else if(i==fruitX&&j==fruitY)
-				putString("0", WHITE);
-			else if(i==headX&&j==headY)
-				putString("o", WHITE);
-			else {
-				for(k=0;k<size;k++) {
-					if(i==bodyX[k] && j==bodyY[k]) {
-						putString("+", WHITE);
-						p=0;
-					}
-				}
-				if(p)
-					putString(" ", WHITE);
-			}
-		}
-		putNewLine();
-	}
-	putString("Scored: ", WHITE);
-	putInt(score);
+    call_clear_screen();
+    int i, j, k, p;
+    for (j = 0; j <= height; j++) {
+        for (i = 0; i <= width; i++) {
+            p = 1;
+            if (i == 0 || j == 0 || i == width || j == height) {
+                putString("*", WHITE);
+            } else if (i == fruitX && j == fruitY && !(headX==fruitX && headY==fruitY)) {
+                putString("0", WHITE);
+            } else if (i == headX && j == headY) {
+                putString("o", WHITE);
+            } else {
+                for (k = 0; k < size; k++) {
+                    if (i == bodyX[k] && j == bodyY[k]) {
+                        putString("+", WHITE);
+                        p = 0;
+                        break;
+                    }
+                }
+                if (p) {
+                    putString(" ", WHITE);
+                }
+            }
+        }
+        putNewLine();
+    }
+    putString("Score: ", WHITE);
+    putInt(score);
 }
 
 void placeFruit(void) {
-	resetfruitX:fruitX=18;
-	//resetfruitX:fruitX=rand()%20;
-	if(fruitX==0||fruitX==width)
-	goto resetfruitX;
+    int maxTries = 100; // Límite de intentos para evitar bucles infinitos
+    for (int try = 0; try < maxTries; try++) {
+        fruitX = custom_rand() % (width - 2) + 1;
+        fruitY = custom_rand() % (height - 2) + 1;
 
-	resetfruitY:fruitY=10;
-	//resetfruitY:fruitY=rand()%20;
-	if(fruitY==0||fruitY==height)
-	goto resetfruitY;
+        // Asegúrate de que la fruta no se superponga con el cuerpo de la serpiente
+        int overlap = 0;
+        for (int i = 0; i < size; i++) {
+            if (fruitX == bodyX[i] && fruitY == bodyY[i]) {
+                overlap = 1;
+                break;
+            }
+        }
+
+        if (!overlap) {
+            break; // Ubicación válida para la fruta
+        }
+    }
+}
+
+
+
+// Esta función genera un número pseudoaleatorio en el rango [0, RAND_MAX]
+int custom_rand() {
+	int numeros[] = {56, 34, 72, 19, 88, 45, 27, 63, 11, 75,
+                    90, 30, 12, 50, 42, 67, 22, 98, 14, 61,
+                    25, 84, 37, 70, 17, 93, 76, 29, 58, 39,
+                    66, 21, 83, 52, 15, 97, 41, 89, 33, 60}; 
+	seed_count = (seed_count + 1) % (sizeof(numeros) / sizeof(numeros[0]));
+    numeros[seed_count] = (214013 * numeros[seed_count] + 2531011);
+    return (numeros[seed_count] >> 16) & 0x7FFF;
 }
 
 void setupGame(void) {
@@ -90,11 +116,9 @@ void setupGame(void) {
 }
 
 void fruitCheck(void) {
- 	if(headX==fruitX && headY==fruitY) {
+	if(headX==fruitX && headY==fruitY) {
 		score+=10;
 		size++;
-		if(speed>50000)
-		speed-=500;
 		placeFruit();
 	}
 }
@@ -156,7 +180,7 @@ void moveSnake(void) {
 
 void gameOverCheck(void) {
 	int i;
-	for(i=0;i<size;i++) {
+	for(i=0;i<size-1;i++) {
 		if(headX==bodyX[i] && headY==bodyY[i])
 			gameOver=1;
 	}
