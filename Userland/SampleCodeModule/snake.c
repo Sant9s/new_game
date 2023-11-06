@@ -25,6 +25,7 @@ void placeFruit(void);
 void renderFrame();
 void fruitCheck(void);
 int custom_rand();
+void goodbye();
 
 void snake() {
 	setupGame();
@@ -38,12 +39,20 @@ void snake() {
 		fruitCheck();
 		call_sleepms(speed);
   	}
-	call_sleepms(400);
+	goodbye();
+}
+
+void goodbye(){
+	call_sleepms(200);
 	call_clear_screen();
 	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
 	putInt(score);
-	putString("\n\n\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
+	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
+	call_sleepms(500);
+	call_clear_screen();
 }
+
+
 
 void snake_multiplayer() {
 	setupGame();
@@ -56,12 +65,7 @@ void snake_multiplayer() {
 		fruitCheck();
 		call_sleepms(speed);
   	}
-	inputCheck();
-	call_sleepms(1500);
-	call_clear_screen();
-	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
-	putInt(score);
-	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
+	goodbye();
 }
 
 
