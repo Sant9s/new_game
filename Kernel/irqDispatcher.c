@@ -17,20 +17,22 @@ static void int_20();
 static void int_21();
 static int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
-typedef void (*InterruptHandler)(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
-//maneja las interrupciones y recibe el numero de la interrupcion y los registros en el momento de la interrupcion
-void irqDispatcher(uint64_t irq, uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9) {
-	InterruptHandler interruption[256] = {NULL};
-	interruption[0]=&int_20;
-	interruption[1]=&int_21;
-	interruption[96] = (InterruptHandler)int_80;
-
-    if (irq >= 0 && irq < 256 && interruption[irq] != NULL) {
-        InterruptHandler handler = interruption[irq];
-        handler(rdi, rsi, rdx, rcx, r8, r9);
+void irqDispatcher(uint64_t irq, uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+	switch(irq){
+		case 0:
+			int_20();
+			break;
+		case 1:
+			int_21();
+			break;
+		case 96:
+			int_80(rdi, rsi, rdx, rcx, r8, r9);
+			break;
+		default:
+			return;
 		return;
-    }
+	}
 }
 
 void int_20() {
