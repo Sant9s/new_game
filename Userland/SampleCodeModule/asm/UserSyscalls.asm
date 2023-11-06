@@ -9,6 +9,8 @@ GLOBAL call_clear
 GLOBAL call_cursor
 GLOBAL call_delete_cursor
 GLOBAL call_clear_screen
+GLOBAL call_getBuffPosition
+GLOBAL call_getLastKey
 
 section .text
 
@@ -49,3 +51,7 @@ call_delete_cursor
     call_to_handler 10
 call_clear_screen
     call_to_handler 11
+call_getBuffPosition
+    call_to_handler 12
+call_getLastKey
+    call_to_handler 13

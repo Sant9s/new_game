@@ -1,10 +1,6 @@
 #ifndef USERSYSCALLS_H
 #define USERSYSCALLS_H
 
-#define STDIN 0
-#define STDOUT 1
-#define STDERR 2
-
 void call_sys_read(char *buf, int size, int fd);
 void call_sys_write(char *buf, int size, int fd);
 void call_timeClock(char *buf);
@@ -16,4 +12,6 @@ void call_clear();
 void call_cursor();
 void call_delete_cursor();
 void call_clear_screen();
+int call_getBuffPosition(int * pos);
+void call_getLastKey(char * key, int pos);
 #endif /* USERSYSCALLS_H */

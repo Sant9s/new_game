@@ -11,7 +11,7 @@ struct keyboard_buffer {
 };
 
 int getBufferLen();
-int getBufferPosition();
+int getBufferPosition(int * a);
 int setPos(int new_len);
 int getBufferLen();
 int setLen(int new_len);
@@ -19,3 +19,4 @@ uint16_t * getBufferAddress();
 uint16_t getCharAt(int pos);
 void cleanBuffer();
 void consumeBuffAt(int pos);
+void getLastKey(char * c, int pos);

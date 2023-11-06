@@ -7,13 +7,14 @@ int width=30;
 int height=30;
 int gameOver=0;
 int direction=2;
-int speeds=0.8i;
 int size=0;
 int score=0;
-int speed=50;
+int speed=80;
 int bodyX[100];
 int bodyY[100];
 int seed_count = 0;
+int buffer_pos;
+int prev_pos = 0;
 
 void render(void);
 void setupGame(void);
@@ -32,16 +33,35 @@ void snake() {
 		clearScreen();
 		render();
 		inputCheck();
+		moveSnake(); 
+		gameOverCheck();
+		fruitCheck();
+		call_sleepms(speed);
+  	}
+	call_sleepms(400);
+	call_clear_screen();
+	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
+	putInt(score);
+	putString("\n\n\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
+}
+
+void snake_multiplayer() {
+	setupGame();
+	placeFruit();
+	while(!gameOver) {
+		clearScreen();
+		render();
 		moveSnake();
 		gameOverCheck();
 		fruitCheck();
 		call_sleepms(speed);
   	}
+	inputCheck();
 	call_sleepms(1500);
 	call_clear_screen();
 	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
 	putInt(score);
-	putString("\n\n\t\tThank You for playing!! (press any key to exit)\n\n\n\n", WHITE);
+	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
 }
 
 
@@ -113,6 +133,16 @@ int custom_rand() {
 void setupGame(void) {
 	headX=height/2;
 	headY=width/2;
+	call_getBuffPosition(&buffer_pos);
+	width=30;
+	height=30;
+	gameOver=0;
+	direction=2;
+	size=0;
+	score=0;
+	speed=50;
+	seed_count = 0;
+	prev_pos = 0;
 }
 
 void fruitCheck(void) {
@@ -124,8 +154,11 @@ void fruitCheck(void) {
 }
 
 void inputCheck(void) {
-	char c = getC();
- 	if(c) {
+	char c;
+	call_getBuffPosition(&buffer_pos);
+	if (prev_pos < buffer_pos){
+		prev_pos = buffer_pos;
+		call_getLastKey(&c, buffer_pos);
 		switch (c) {
 			case 'w':
 				if(direction!=3)

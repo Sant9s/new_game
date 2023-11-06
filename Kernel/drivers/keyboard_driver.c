@@ -158,7 +158,8 @@ void keyboard_handler() {
 	}
     
     uint16_t * buff = getBufferAddress();  
-    int buff_pos = getBufferPosition();  
+    int buff_pos;
+    getBufferPosition(&buff_pos);  
     
     // Verifica si hay espacio suficiente en el búfer para almacenar el valor de la tecla
     if (buff_pos+1 < BUFF_SIZE){
