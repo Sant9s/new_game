@@ -4,26 +4,30 @@
 #include "syscalls.h"
 
 #define ZERO_EXCEPTION_ID 0
-//maneja las excepciones y recibe el numero de la excepcion y los registros en el momento de la excepcion
-void exceptionDispatcher(int exception, registerStructT * registers) {
-	if (exception == ZERO_EXCEPTION_ID){
-		zero_division();
+#define OPCODE_EXCEPTION_ID 6
+
+char * ZERO_EXCEPTION_DESCRIPTION = "FATAL ERROR: Can not divide by 0";
+char * OPCODE_EXCEPTION_DESCRIPTION = "FATAL ERROR: Invalid opcode";
+
+
+
+void exceptionDispatcher(int ex, registerStructT * registers) {
+	char * msg;
+	switch(ex) {
+		case ZERO_EXCEPTION_ID:
+			msg = ZERO_EXCEPTION_DESCRIPTION;
+			break;
+		case OPCODE_EXCEPTION_ID:
+			msg = OPCODE_EXCEPTION_DESCRIPTION;
+			break;
+	
 	}
-	else{
-		invalid_opcode();
-	}
+	
+	drawWordColor(RED, msg);
+	newline();
 	printRegisters(registers);
 	drawWordColor(RED, "Press any key to continue");
 	char c;
 	sys_read(&c, 1, 0);
-}
-//excepcion de division por cero
- void zero_division() {
-	drawWordColor(RED, "FATAL ERROR: Can not divide by 0");
-	newline();
-}
-//excepcion de codigo invalido
- void invalid_opcode() {
-	drawWordColor(RED, "FATAL ERROR: Invalid opcode");
-	newline();
+
 }
