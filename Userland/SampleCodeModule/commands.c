@@ -97,7 +97,7 @@ void play_snake(){
         }
         if (c == '2'){
             flag = 0;
-            //snake multiplayer
+            snake_multiplayer();
         }
         if (flag) putString(" Error", RED);
     }

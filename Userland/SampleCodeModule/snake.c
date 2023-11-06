@@ -60,7 +60,8 @@ void snake_multiplayer() {
 	while(!gameOver) {
 		clearScreen();
 		render();
-		moveSnake();
+		inputCheck();
+		moveSnake(); 
 		gameOverCheck();
 		fruitCheck();
 		call_sleepms(speed);

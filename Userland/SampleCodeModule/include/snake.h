@@ -2,5 +2,6 @@
 #define SNAKE_H
 
 void snake();
+void snake_multiplayer();
 
 #endif
