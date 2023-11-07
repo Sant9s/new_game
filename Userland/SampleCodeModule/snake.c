@@ -3,15 +3,15 @@
 #include <UserSyscalls.h>
 
 int headX, headY, fruitX, fruitY, headX2, headY2;
-int width=40;
+int width=30;
 int height=30;
 int gameOver=0;
 int direction=2;
 int direction2=4;
-int size=0;
-int size2=0;
-int score=0;
-int score2=0;
+int size;
+int size2;
+int score;
+int score2;
 int speed=40;
 int bodyX[100];
 int bodyY[100];
@@ -22,6 +22,8 @@ int buffer_pos;
 int prev_pos = 0;
 int players;
 int highscore=0;
+int player1Alive;
+int player2Alive;
 
 void render(void);
 void setupGame(void);
@@ -63,6 +65,7 @@ void start_snake(){
 
 void snake() {
 	players = 1;
+	player1Alive = 1;
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
@@ -117,6 +120,8 @@ void goodbye(){
 
 void snake_multiplayer() {
 	players = 2;
+	player1Alive = 1;
+	player2Alive = 1;
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
@@ -146,11 +151,11 @@ void render(void) {
 				else if((players == 2) && !(headX2==fruitX && headY2==fruitY)){
 					putString("0", RED);
 				}    
-            } else if (i == headX && j == headY) {
+            } else if (i == headX && j == headY && player1Alive) {
                 putString("o", WHITE);
-			}else if((players == 2) && (i == headX2 && j == headY2)){
+			}else if((players == 2) && (i == headX2 && j == headY2) && player2Alive){
 				putString("o", BLUE);
-            } else {
+            } else{
                 for (k = 0; k < size; k++) {
                     if ((i == bodyX[k] && j == bodyY[k])) {
                         putString("+", WHITE);
@@ -188,8 +193,14 @@ void render(void) {
 	if(players == 2){
 		putString("Player 1 score: ", WHITE);
     	putInt(score);
+		if(!player1Alive){
+			putString("  DEAD", RED);
+		}
 		putString("\nPlayer 2 score: ", WHITE);
     	putInt(score2);
+		if(!player2Alive){
+			putString("  DEAD", RED);
+		}
 	}
     
 }
@@ -239,6 +250,10 @@ void setupGame(void) {
 		headX2=2*height/3;
 		headY2=2*width/3;
 		size2 = 0;
+		player2Alive = 1;
+		direction2=4;
+		size2=0;
+		score2=0;
 	}
 	if(players == 1){
 		headX=height/2;
@@ -247,6 +262,11 @@ void setupGame(void) {
 	call_getBuffPosition(&buffer_pos);
 	seed_count = 0;
 	prev_pos = 0;
+	player1Alive = 1;
+	gameOver=0;
+	direction=2;
+	size=0;
+	score=0;
 }
 
 
@@ -310,103 +330,140 @@ void inputCheck(void) {
 
 void moveSnake(void) {
 	int x1,x2,y1,y2,i;
-	if(size==1){
+	if(player1Alive){
+		if(size==1){
 		bodyX[0]=headX;
 		bodyY[0]=headY;
-	} else {
-		x1=headX;
-		y1=headY;
-		for(i=0;i<size;i++) {
-			x2=bodyX[i];
-			y2=bodyY[i];
-			bodyX[i]=x1;
-			bodyY[i]=y1;
-			x1=x2;
-			y1=y2;
+		} else {
+			x1=headX;
+			y1=headY;
+			for(i=0;i<size;i++) {
+				x2=bodyX[i];
+				y2=bodyY[i];
+				bodyX[i]=x1;
+				bodyY[i]=y1;
+				x1=x2;
+				y1=y2;
+			}
+		}
+		switch (direction) {
+			case 1:
+				headY--;
+				break;
+			case 2:
+				headX++;
+				break;
+			case 3:
+				headY++;
+				break;
+			case 4:
+				headX--;
 		}
 	}
-	switch (direction) {
-		case 1:
-			headY--;
-			break;
-		case 2:
-			headX++;
-			break;
-		case 3:
-			headY++;
-			break;
-		case 4:
-			headX--;
-	}
-	if(players == 2){
+	
+	if(players == 2 && player2Alive){
 		if(size2==1){
 		bodyX2[0]=headX2;
 		bodyY2[0]=headY2;
-	} else {
-		x1=headX2;
-		y1=headY2;
-		for(i=0;i<size2;i++) {
-			x2=bodyX2[i];
-			y2=bodyY2[i];
-			bodyX2[i]=x1;
-			bodyY2[i]=y1;
-			x1=x2;
-			y1=y2;
+		} else {
+			x1=headX2;
+			y1=headY2;
+			for(i=0;i<size2;i++) {
+				x2=bodyX2[i];
+				y2=bodyY2[i];
+				bodyX2[i]=x1;
+				bodyY2[i]=y1;
+				x1=x2;
+				y1=y2;
+			}
 		}
-	}
-	switch (direction2) {
-		case 1:
-			headY2--;
-			break;
-		case 2:
-			headX2++;
-			break;
-		case 3:
-			headY2++;
-			break;
-		case 4:
-			headX2--;
+		switch (direction2) {
+			case 1:
+				headY2--;
+				break;
+			case 2:
+				headX2++;
+				break;
+			case 3:
+				headY2++;
+				break;
+			case 4:
+				headX2--;
 	}
 	}
 }
 
 
 void gameOverCheck(void) {
-	// check if player1 is out of bounds
-	if(headX==width||headX==0||headY==height||headY==0){
-		gameOver = 1;
-		return;
-	}
+	
+	
 
-	// check if player1 crashed againts itself
+	
 	if(players == 1){
+		// check if player1 is out of bounds
+		if((headX==width||headX==0||headY==height||headY==0)){
+			gameOver = 1;
+			return;
+		}
+		// check if player1 crashed againts itself
 		for(int i=0;i<size-1;i++) {
 		if(headX==bodyX[i] && headY==bodyY[i])
 			gameOver=1;
-	}
+			return;
+		}
 	}
 	
 
 	if(players == 2){
-		// check if player 2 is out of bounds
-		if(headX2==width||headX2==0||headY2==height||headY2==0){
-			gameOver=1;
-			return;
+		// check if player 1 is out of bounds
+		if((headX==width||headX==0||headY==height||headY==0)){
+			player1Alive = 0;
 		}
 
+		// check if player 2 is out of bounds
+		if(headX2==width||headX2==0||headY2==height||headY2==0){
+			player2Alive = 0;
+		}
+		
 		for(int i=0; i < size-1; i++){
-				if((headX2==bodyX[i] && headY2==bodyY[i]) || (headX==bodyX[i] && headY==bodyY[i])){
-				gameOver=1;		
-				return;
-			}	
+				// check if player 2 crashed against player 1
+				if((headX2==bodyX[i] && headY2==bodyY[i])){
+					player2Alive = 0;		
+				}
+				
+				// check if player 1 crashed against himself
+				if(headX==bodyX[i] && headY==bodyY[i]){
+					player1Alive = 0;
+				}
 		}
 		
 		for(int i=0;i<size2-1;i++) {
-			if((headX==bodyX2[i] && headY==bodyY2[i]) || (headX2==bodyX2[i] && headY2==bodyY2[i]) ){		
-				gameOver = 1;
-				return; 
+			// check if player 1 crashed against player 2
+			if((headX==bodyX2[i] && headY==bodyY2[i])){		
+				player1Alive = 0; 
+			}
+			// check if player 2 crashed against himself
+			if(headX2==bodyX2[i] && headY2==bodyY2[i]){
+				player2Alive = 0;
 			}
 		}
-		
+		if(!player1Alive && !player2Alive){
+			gameOver = 1;
+		}
+
+		if(!player1Alive){
+			for(int i = 0; i < size ; i++){
+				bodyX[i] = '\0';
+				bodyY[i] = '\0';
+			}
+			size = 0;
+		}
+		if(!player2Alive){
+			for(int i = 0; i < size2 ; i++){
+				bodyX2[i] = '\0';
+				bodyY2[i] = '\0';
+			}
+			size2 = 0;
+		}
 	}
 }
