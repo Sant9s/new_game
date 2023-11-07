@@ -60,3 +60,7 @@ call_getLastKey:
     call_to_handler 13
 call_set_font_size:
     call_to_handler 14
+call_put_char_in_set_position:
+    call_to_handler 15
+call_beep:
+    call_to_handler 16
