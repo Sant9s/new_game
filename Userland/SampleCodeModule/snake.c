@@ -3,7 +3,7 @@
 #include <UserSyscalls.h>
 
 int headX, headY, fruitX, fruitY, headX2, headY2;
-int width=30;
+int width=40;
 int height=30;
 int gameOver=0;
 int direction=2;
@@ -12,7 +12,7 @@ int size=0;
 int size2=0;
 int score=0;
 int score2=0;
-int speed=100;
+int speed=40;
 int bodyX[100];
 int bodyY[100];
 int bodyX2[100];
@@ -242,15 +242,7 @@ void setupGame(void) {
 		headX=height/2;
 		headY=width/2;
 	}
-	
 	call_getBuffPosition(&buffer_pos);
-	width=30;
-	height=30;
-	gameOver=0;
-	direction=2;
-	size=0;
-	score=0;
-	speed=50;
 	seed_count = 0;
 	prev_pos = 0;
 }
