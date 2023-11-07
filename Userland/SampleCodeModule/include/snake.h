@@ -3,5 +3,6 @@
 
 void snake();
 void snake_multiplayer();
+void start_snake();
 
 #endif
