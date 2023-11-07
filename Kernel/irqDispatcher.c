@@ -65,11 +65,11 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 		break;
 
 	case 5:
-		changeSize(1);
+		changeSize(-1);
 		break;
 
 	case 6:
-		changeSize(-1);
+		changeSize(1);
 		break;
 
 	case 7:
@@ -93,6 +93,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 		break;
 	case 13:
 		getLastKey((char*)rsi, rdx);
+		break;
+	case 14:
+		setSize(rsi);
 		break;
 
 	default:

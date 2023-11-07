@@ -25,6 +25,7 @@ void clear();
 void drawCursor();
 void deleteCursor();
 void clearScreen();
+void setFontSize(int value);
 
 
 #endif /* _VIDEO_DRIVER_H */

@@ -11,6 +11,7 @@ GLOBAL call_delete_cursor
 GLOBAL call_clear_screen
 GLOBAL call_getBuffPosition
 GLOBAL call_getLastKey
+GLOBAL call_set_font_size
 
 section .text
 
@@ -55,3 +56,5 @@ call_getBuffPosition:
     call_to_handler 12
 call_getLastKey:
     call_to_handler 13
+call_set_font_size:
+    call_to_handler 14

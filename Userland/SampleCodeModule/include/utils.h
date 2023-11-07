@@ -23,4 +23,5 @@ int own_scanf(char * format, ...);
 int readInt(int* d);
 int readString(char *s);
 int readHexInt(int* d);
+void setFontSize(int size);
 #endif /* UTILS_H */

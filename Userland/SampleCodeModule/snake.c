@@ -33,12 +33,39 @@ void fruitCheck(void);
 int custom_rand();
 void goodbye();
 
+void start_snake(){
+     char c;
+    int flag = 1;
+    while (flag){
+        clearScreen();
+        setFontSize(10);
+        own_printf("    SNAKE\n\n\n\n");
+        setFontSize(4);
+        putString(" Single Player:   Press 1\n Multiplayer:     Press 2\n", WHITE);
+        setFontSize(1);
+        putNewLine();
+        
+        c = getC();
+        if (c == '1'){
+            flag = 0;
+            snake();
+        }
+        if (c == '2'){
+            flag = 0;
+            snake_multiplayer();
+        }
+        if (flag) own_printf(" Error", RED);
+    }
+
+}
+
 void snake() {
 	players = 1;
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
-		clearScreen();
+		// clearScreen();
+        
 		render();
 		inputCheck();
 		moveSnake(); 
@@ -52,31 +79,35 @@ void snake() {
 void goodbye(){
 	call_sleepms(200);
 	call_clear_screen();
+    setFontSize(3);
 	if(players == 1){
-		putString("\n\n\n\n\t\tYour final Score: ", WHITE);
+		putString("Your final Score: ", WHITE);
 		putInt(score);
 		if(score > highscore){
 			highscore = score;
 		}
-		putString("\n\n\t\tHighscore: ", WHITE);
+		putString("\n\nHighscore: ", WHITE);
 		putInt(highscore);
+        
 	}
 	if(players == 2){
-		putString("\n\n\n\n\t\tPlayer 1 final Score: ", WHITE);
+		putString("Player 1 final Score: ", WHITE);
 		putInt(score);
-		putString("\n\n\n\n\t\tPlayer 2 final Score: ", WHITE);
+        putNewLine();
+		putString("Player 2 final Score: ", WHITE);
 		putInt(score2);
-		if (score>score2) putString("\n\n\n\n\t\tThe winner is Player 1!!\n\n\n\n", WHITE);
-		if (score<score2) putString("\n\n\n\n\t\tThe winner is Player 2!!\n\n\n\n", WHITE);
-		if (score==score2) putString("\n\n\n\n\t\tThere was a tie!!\n\n\n\n", WHITE);
-		putNewLine();
-		putNewLine();
-		putNewLine();
+		if (score>score2) putString("\n\n\n\nThe winner is Player 1!!\n\n\n\n", WHITE);
+		if (score<score2) putString("\n\n\n\nThe winner is Player 2!!\n\n\n\n", WHITE);
+		if (score==score2) putString("\n\n\n\nThere was a tie!!\n\n\n\n", WHITE);
 	}
+    putNewLine();
+	putNewLine();
+	putNewLine();
 	score = 0;
 	score2 = 0;
-	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
-	call_sleepms(700);
+	putString("\n\nThank You for playing!!\n\n\n\n", WHITE);
+    setFontSize(1);
+	call_sleepms(1000);
 	call_clear_screen();
 }
 

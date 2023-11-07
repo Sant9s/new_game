@@ -58,13 +58,13 @@ void clearScreen(){
 
 void zoomIn(){
     call_clear_screen();
-    call_zoomOut();
+    call_zoomIn();
     showScreen();
 }
 
 void zoomOut(){
     call_clear_screen();
-    call_zoomIn();
+    call_zoomOut();
     showScreen();
 }
 
@@ -80,21 +80,7 @@ void exitShell(){
 }
 
 void play_snake(){
-    char c;
-    int flag = 1;
-    while (flag){
-        putNewLine();
-        own_printf("Type 1 for 1 player or type 2 for 2 players: ");
-        c = getC();
-        if (c == '1'){
-            flag = 0;
-            snake();
-        }
-        if (c == '2'){
-            flag = 0;
-            snake_multiplayer();
-        }
-        if (flag) own_printf(" Error", RED);
-    }
+    start_snake();
+    setFontSize(1);
  }
     

@@ -267,3 +267,7 @@ int readHexInt(int* d){
     *d = value * sign;
     return 1;
 }
+
+void setFontSize(int size){
+    call_set_font_size(size);
+}
