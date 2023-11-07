@@ -24,4 +24,5 @@ int readInt(int* d);
 int readString(char *s);
 int readHexInt(int* d);
 void setFontSize(int size);
+void putCharColorPos(char character, int color, int x, int y);
 #endif /* UTILS_H */

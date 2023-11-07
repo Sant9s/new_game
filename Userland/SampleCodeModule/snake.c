@@ -36,6 +36,7 @@ int custom_rand();
 void goodbye();
 void snake();
 void snake_multiplayer();
+void renderBorder();
 
 void start_snake(){
      char c;
@@ -63,6 +64,7 @@ void start_snake(){
 
 }
 
+
 void snake() {
 	players = 1;
 	player1Alive = 1;
@@ -72,6 +74,7 @@ void snake() {
 		// clearScreen();
         
 		render();
+		
 		inputCheck();
 		moveSnake(); 
 		gameOverCheck();
@@ -136,6 +139,24 @@ void snake_multiplayer() {
 	goodbye();
 }
 
+// void renderBorder(){
+// 	call_clear_screen();
+// 	int i;
+// 	for(int j = 0; j <= height; j++){
+// 		if(j == 0 || j == height){
+// 			for(int i = 0; i < width; i++){
+// 				putCharColorPos('*', WHITE, i*8, j*16);
+// 			}
+// 		}
+// 		else{
+// 			putCharColorPos('*', WHITE, 0, j*16);
+// 			putCharColorPos('*', WHITE, width*8, j*16);
+// 		}
+// 		putNewLine();
+// 	}
+
+// }
+
 void render(void) {
     call_clear_screen();
     int i, j, k, p;
@@ -180,6 +201,9 @@ void render(void) {
         }
         putNewLine();
     }
+
+
+
 	if(players == 1){
 		putString("Your Score: ", WHITE);
     	putIntColor(score, GREEN);

@@ -253,3 +253,9 @@ void drawCursor(){
 void deleteCursor(){
     drawRectangle(bg_color, cursorX, cursorY, size*8, size*16);
 }
+
+void putCharInSetSpace(char c, int color, int x, int y){
+    cursorX = x; 
+    cursorY = y;
+    drawChar(COLORS[color], c);
+}

@@ -97,6 +97,8 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 14:
 		setSize(rsi);
 		break;
+	case 15:
+		putCharInSetSpace(rsi, rdx, rdx, rcx);
 
 	default:
 		return 0;
