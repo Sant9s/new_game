@@ -19,7 +19,7 @@ void changeSize(double new_size);
 void newline();
 void drawWordColor(uint64_t hexColor, char* word);
 void drawWord(char* word);
-void invalidFd(); //indica que el filedescriptor es invalido
+void invalidFd(); // indicates that the filedescripor is invalid
 void drawRegisters(int value);
 void clear();
 void drawCursor();

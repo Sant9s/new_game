@@ -6,16 +6,12 @@
 
 #define COMMAND_AMOUNT 10
 
-
-
-
-
-void checkCommands(char * command); //Busca el comando ingresado por el usuario
+void checkCommands(char * command); // searches for command
 void commandNotFound(char * command);
-void help(); //Imprime la lista de comandos
-void time(); //Imprime la hora actual
-void div0(); //Divide por 0 y genera una excepcion
-void invalidOp(); //Genera una excepcion de operacion invalida
+void help(); // prints list of commands
+void time(); // prints current time
+void div0(); // divides by zero and throws an exception
+void invalidOp(); // generates invalid opcode exception
 void clearScreen();
 void zoomIn();
 void zoomOut();

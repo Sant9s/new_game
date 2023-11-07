@@ -9,9 +9,9 @@
 static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE", "CLEAR","EXIT"};
 void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell};
 
-//busca el comando en la lista de comandos y llama a la funcion correspondiente 
+// searches for the command by going though the array of strings and comparing
 void checkCommands(char * command){
-    removeLeadingTrailingSpaces(command); 
+    removeLeadingTrailingSpaces(command);                       // deletes spaces at the beginning and end of the command
     for (int i = 0; i < COMMAND_AMOUNT; i++){
         if (strCompare(command_list[i], command) == 0){  
                 functionPointers[i]();
@@ -22,28 +22,23 @@ void checkCommands(char * command){
 }
 
 void commandNotFound(char * command){
-    putString("ERROR: - '", GREEN);
-    putString(command, GREEN);
-    putString("' is not a valid command\n", GREEN);
-    putString("Type help to show all commands\n", GREEN);
+    own_printf("ERROR: - '%s' is not a valid command\n", command);
+    own_printf("Type help to show all commands\n", GREEN);
 }
 
 
-//imprime la lista de comandos disponibles
+// prints list of commands
 void help(){
-    putString("Command list:\n", GREEN); 
+    own_printf("Command list:\n", GREEN);
     for (int i = 0; i < COMMAND_AMOUNT; i++){
-        putString(" - ", GREEN);
-        putString(command_list[i], GREEN);
-        putNewLine();
+        own_printf(" - %s\n", command_list[i]);
     }
 }
 
 void time(){
     char timeClock[50];
     call_timeClock(timeClock);
-    putString(timeClock, GREEN);
-    putNewLine();
+    own_printf("%s\n", timeClock);
 }
 
 void div0(){
@@ -74,7 +69,7 @@ void zoomOut(){
 }
 
 void exitShell(){
-    putString("Exiting Shell", RED);
+    own_printf("Exiting Shell");
     call_sleepms(100);
     putC('.',RED);
     call_sleepms(130);
@@ -89,7 +84,7 @@ void play_snake(){
     int flag = 1;
     while (flag){
         putNewLine();
-        putString("Type 1 for 1 player or type 2 for 2 players: ", GREEN);
+        own_printf("Type 1 for 1 player or type 2 for 2 players: ");
         c = getC();
         if (c == '1'){
             flag = 0;
@@ -99,7 +94,7 @@ void play_snake(){
             flag = 0;
             snake_multiplayer();
         }
-        if (flag) putString(" Error", RED);
+        if (flag) own_printf(" Error", RED);
     }
  }
     

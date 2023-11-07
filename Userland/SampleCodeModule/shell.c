@@ -10,7 +10,7 @@ int screenIndx = 0;
 int status;
 
 void putLine(){   
-    putString("user > ", GREEN);
+    own_printf("user > ");
     putCursor();
 }
 
@@ -78,7 +78,7 @@ void changeStatus(){
 
 void welcome(){
     char * WELCOME_MESSAGE = "Welcome to the shell\nType help to show all commands\n";
-    putString(WELCOME_MESSAGE, GREEN);
+    own_printf("%s", WELCOME_MESSAGE);
 }
 
 int start_shell(){

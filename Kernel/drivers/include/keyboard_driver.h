@@ -3,8 +3,8 @@
 #define KEYBOARD_DRIVER_H
 
 
-void keyboard_handler(); // Función que maneja las interrupciones del teclado
-extern int getKey(); // Función que obtiene el valor de la tecla presionada
+void keyboard_handler(); // handles keyboard interruptions
+extern int getKey(); // gets the value of the pressed key
 
 
 

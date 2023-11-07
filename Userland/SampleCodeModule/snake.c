@@ -12,7 +12,7 @@ int size=0;
 int size2=0;
 int score=0;
 int score2=0;
-int speed=120;
+int speed=100;
 int bodyX[100];
 int bodyY[100];
 int bodyX2[100];
@@ -32,14 +32,6 @@ void placeFruit(void);
 void fruitCheck(void);
 int custom_rand();
 void goodbye();
-void render2(void);
-void setupGame2(void);
-void inputCheck2(void);
-void moveSnake2(void);
-void gameOverCheck2(void);
-void placeFruit2(void);
-void fruitCheck2(void);
-void goodbye2();
 
 void snake() {
 	players = 1;
@@ -74,15 +66,15 @@ void goodbye(){
 		putInt(score);
 		putString("\n\n\n\n\t\tPlayer 2 final Score: ", WHITE);
 		putInt(score2);
-		if (score>score2) putString("\n\n\t\tThe winner is Player 1!!\n\n\n\n", WHITE);
-		if (score<score2) putString("\n\n\t\tThe winner is Player 2!!\n\n\n\n", WHITE);
-		if (score==score2) putString("\n\n\t\tThere was a tie!!\n\n\n\n", WHITE);
+		if (score>score2) putString("\n\n\n\n\t\tThe winner is Player 1!!\n\n\n\n", WHITE);
+		if (score<score2) putString("\n\n\n\n\t\tThe winner is Player 2!!\n\n\n\n", WHITE);
+		if (score==score2) putString("\n\n\n\n\t\tThere was a tie!!\n\n\n\n", WHITE);
 		putNewLine();
 		putNewLine();
 		putNewLine();
 	}
-	// score = 0;
-	// score2 = 0;
+	score = 0;
+	score2 = 0;
 	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
 	call_sleepms(700);
 	call_clear_screen();
@@ -132,7 +124,6 @@ void render(void) {
                         p = 0;
                         break;
                     }
-
                 }
 				if(players == 2){
 					for (k = 0; k < size2; k++) {

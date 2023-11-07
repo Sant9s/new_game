@@ -18,4 +18,9 @@ void putInt(int num);
 void putIntColor(int num, int color);
 void putCursor();
 void removeCursor();
+void own_printf(const char * format, ...);
+int own_scanf(char * format, ...);
+int readInt(int* d);
+int readString(char *s);
+int readHexInt(int* d);
 #endif /* UTILS_H */
