@@ -214,7 +214,7 @@ int own_scanf(char * format, ...){
 
 int readInt(int* d){
     int value = 0;
-    int sign = 1; //en principio positivo
+    int sign = 1;
     char c = getC();
 
     if(c == '-'){

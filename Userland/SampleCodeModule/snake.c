@@ -3,7 +3,7 @@
 #include <UserSyscalls.h>
 
 int headX, headY, fruitX, fruitY, headX2, headY2;
-int width=50;
+int width=40;
 int height=30;
 int gameOver=0;
 int direction=2;
@@ -71,10 +71,7 @@ void snake() {
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
-		// clearScreen();
-        
 		render();
-		
 		inputCheck();
 		moveSnake(); 
 		gameOverCheck();
@@ -138,24 +135,6 @@ void snake_multiplayer() {
   	}
 	goodbye();
 }
-
-// void renderBorder(){
-// 	call_clear_screen();
-// 	int i;
-// 	for(int j = 0; j <= height; j++){
-// 		if(j == 0 || j == height){
-// 			for(int i = 0; i < width; i++){
-// 				putCharColorPos('*', WHITE, i*8, j*16);
-// 			}
-// 		}
-// 		else{
-// 			putCharColorPos('*', WHITE, 0, j*16);
-// 			putCharColorPos('*', WHITE, width*8, j*16);
-// 		}
-// 		putNewLine();
-// 	}
-
-// }
 
 void render(void) {
     call_clear_screen();
@@ -230,15 +209,15 @@ void render(void) {
 }
 
 void placeFruit(void) {
-    int maxTries = 100; // Límite de intentos para evitar bucles infinitos
+    int maxTries = 100; // Limit to avoid infinite loop
     for (int try = 0; try < maxTries; try++) {
         fruitX = custom_rand() % (width - 2) + 1;
         fruitY = custom_rand() % (height - 2) + 1;
 
-        // Asegúrate de que la fruta no se superponga con el cuerpo de la serpiente
+        // Check that fruit doesnt spawn in the position of a snake
         int overlap = 0;
         for (int i = 0; i < size; i++) {
-			if((players == 2) && (fruitX == bodyX2[i] && fruitY == bodyY2[i])){			// no me gusta que este checkeando constantemente si hay 2 jugadores
+			if((players == 2) && (fruitX == bodyX2[i] && fruitY == bodyY2[i])){			
 				overlap = 1;
                 break;
 			}
@@ -249,7 +228,7 @@ void placeFruit(void) {
         }
 
         if (!overlap) {
-            break; // Ubicación válida para la fruta
+            break; // Valid loaction for fruit
         }
     }
 }
@@ -481,14 +460,16 @@ void gameOverCheck(void) {
 			gameOver = 1;
 		}
 
-		if(!player1Alive){
+		if(!player1Alive){		
+			// deletes player1's body				
 			for(int i = 0; i < size ; i++){
 				bodyX[i] = '\0';
 				bodyY[i] = '\0';
 			}
 			size = 0;
 		}
-		if(!player2Alive){
+		if(!player2Alive){		
+			// deletes player2's body				
 			for(int i = 0; i < size2 ; i++){
 				bodyX2[i] = '\0';
 				bodyY2[i] = '\0';
