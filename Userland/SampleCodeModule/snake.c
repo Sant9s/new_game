@@ -21,6 +21,7 @@ int seed_count = 0;
 int buffer_pos;
 int prev_pos = 0;
 int players;
+int highscore=0;
 
 void render(void);
 void setupGame(void);
@@ -62,6 +63,11 @@ void goodbye(){
 	if(players == 1){
 		putString("\n\n\n\n\t\tYour final Score: ", WHITE);
 		putInt(score);
+		if(score > highscore){
+			highscore = score;
+		}
+		putString("\n\n\t\tHighscore: ", WHITE);
+		putInt(highscore);
 	}
 	if(players == 2){
 		putString("\n\n\n\n\t\tPlayer 1 final Score: ", WHITE);
@@ -75,8 +81,8 @@ void goodbye(){
 		putNewLine();
 		putNewLine();
 	}
-	score = 0;
-	score2 = 0;
+	// score = 0;
+	// score2 = 0;
 	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
 	call_sleepms(700);
 	call_clear_screen();
@@ -147,7 +153,13 @@ void render(void) {
     }
 	if(players == 1){
 		putString("Your Score: ", WHITE);
-    	putIntColor(score, WHITE);
+    	putIntColor(score, GREEN);
+		putNewLine();
+		if(score > highscore){
+			highscore = score;
+		}
+		putString("High Score: ", WHITE);
+		putIntColor(highscore, GREEN);
 	}
 	if(players == 2){
 		putString("Player 1 score: ", WHITE);
