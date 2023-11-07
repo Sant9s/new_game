@@ -13,6 +13,7 @@ GLOBAL call_getBuffPosition
 GLOBAL call_getLastKey
 GLOBAL call_set_font_size
 GLOBAL call_put_char_in_set_position
+GLOBAL call_beep
 
 section .text
 
@@ -59,5 +60,3 @@ call_getLastKey:
     call_to_handler 13
 call_set_font_size:
     call_to_handler 14
-call_put_char_in_set_position:
-    call_to_handler 15

@@ -4,5 +4,5 @@
 #include <stdint.h>
 #include <lib.h>
 
-void beep(int freq, int time);
+void beep(int freq);
 #endif

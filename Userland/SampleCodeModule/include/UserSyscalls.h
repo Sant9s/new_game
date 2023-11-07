@@ -15,4 +15,5 @@ void call_clear_screen();
 int call_getBuffPosition(int * pos);
 void call_getLastKey(char * key, int pos);
 void call_set_font_size(int size);
+void call_beep(int freq);
 #endif /* USERSYSCALLS_H */

@@ -11,6 +11,7 @@
 #include "time.h"
 #include "drivers/include/keyboard_driver.h"
 #include "syscalls.h"
+#include "drivers/include/sound_driver.h"
 
 
 static void int_20();
@@ -99,6 +100,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 		break;
 	case 15:
 		putCharInSetSpace(rsi, rdx, rdx, rcx);
+	case 16:
+		beep(rsi);
+		break;
 
 	default:
 		return 0;
