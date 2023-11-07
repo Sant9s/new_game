@@ -107,8 +107,12 @@ void removeLeadingTrailingSpaces(char* str) {
     
 
 void putInt(int num) {
+    putIntColor(num, GREEN);
+}
+
+void putIntColor(int num, int color) {
     if (num < 0) {
-        putC('-', GREEN);
+        putC('-', color);
         num = -num;
     }
 
@@ -119,7 +123,7 @@ void putInt(int num) {
 
     while (divisor > 0) {
         int digit = num / divisor;
-        putC('0' + digit, GREEN);
+        putC('0' + digit, color);
         num %= divisor;
         divisor /= 10;
     }

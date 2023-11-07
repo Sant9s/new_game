@@ -20,6 +20,7 @@ int bodyY2[100];
 int seed_count = 0;
 int buffer_pos;
 int prev_pos = 0;
+int players;
 
 void render(void);
 void setupGame(void);
@@ -40,6 +41,7 @@ void fruitCheck2(void);
 void goodbye2();
 
 void snake() {
+	players = 1;
 	setupGame();
 	placeFruit();
 	while(!gameOver) {
@@ -57,46 +59,46 @@ void snake() {
 void goodbye(){
 	call_sleepms(200);
 	call_clear_screen();
-	putString("\n\n\n\n\t\tYour final Score: ", WHITE);
-	putInt(score);
+	if(players == 1){
+		putString("\n\n\n\n\t\tYour final Score: ", WHITE);
+		putInt(score);
+	}
+	if(players == 2){
+		putString("\n\n\n\n\t\tPlayer 1 final Score: ", WHITE);
+		putInt(score);
+		putString("\n\n\n\n\t\tPlayer 2 final Score: ", WHITE);
+		putInt(score2);
+		if (score>score2) putString("\n\n\t\tThe winner is Player 1!!\n\n\n\n", WHITE);
+		if (score<score2) putString("\n\n\t\tThe winner is Player 2!!\n\n\n\n", WHITE);
+		if (score==score2) putString("\n\n\t\tThere was a tie!!\n\n\n\n", WHITE);
+		putNewLine();
+		putNewLine();
+		putNewLine();
+	}
+	score = 0;
+	score2 = 0;
 	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
-	call_sleepms(500);
-	call_clear_screen();
-}
-
-void goodbye2(){
-	call_sleepms(200);
-	call_clear_screen();
-	putString("\n\n\n\n\t\tPlayer 1 final Score: ", WHITE);
-	putInt(score);
-	putString("\n\n\n\n\t\tPlayer 2 final Score: ", WHITE);
-	putInt(score2);
-	if (score>score2) putString("\n\n\t\tThe winner is Player 1!!\n\n\n\n", WHITE);
-	if (score<score2) putString("\n\n\t\tThe winner is Player 2!!\n\n\n\n", WHITE);
-	if (score==score2) putString("\n\n\t\tThere was a tie!!\n\n\n\n", WHITE);
-	putString("\n\n\t\tThank You for playing!!\n\n\n\n", WHITE);
-	call_sleepms(500);
+	call_sleepms(700);
 	call_clear_screen();
 }
 
 
 
 void snake_multiplayer() {
-	setupGame2();
-	placeFruit2();
+	players = 2;
+	setupGame();
+	placeFruit();
 	while(!gameOver) {
 		clearScreen();
-		render2();
-		inputCheck2();
-		inputCheck2();
-		moveSnake2(); 
-		gameOverCheck2();
-		fruitCheck2();
+		render();
+		inputCheck();
+		moveSnake(); 
+		gameOverCheck();
+		fruitCheck();
 		call_sleepms(speed);
   	}
-	goodbye2();
+	goodbye();
 }
-
 
 void render(void) {
     call_clear_screen();
@@ -106,42 +108,16 @@ void render(void) {
             p = 1;
             if (i == 0 || j == 0 || i == width || j == height) {
                 putString("*", WHITE);
-            } else if (i == fruitX && j == fruitY && !(headX==fruitX && headY==fruitY)) {
-                putString("0", RED);
+            } else if (i == fruitX && j == fruitY && !(headX==fruitX && headY==fruitY)){
+				if(players == 1){
+					putString("0", RED);
+				}
+				else if((players == 2) && !(headX2==fruitX && headY2==fruitY)){
+					putString("0", RED);
+				}    
             } else if (i == headX && j == headY) {
                 putString("o", WHITE);
-            } else {
-                for (k = 0; k < size; k++) {
-                    if (i == bodyX[k] && j == bodyY[k]) {
-                        putString("+", WHITE);
-                        p = 0;
-                        break;
-                    }
-                }
-                if (p) {
-                    putString(" ", WHITE);
-                }
-            }
-        }
-        putNewLine();
-    }
-    putString("Score: ", WHITE);
-    putInt(score);
-}
-
-void render2(void) {
-    call_clear_screen();
-    int i, j, k, p;
-    for (j = 0; j <= height; j++) {
-        for (i = 0; i <= width; i++) {
-            p = 1;
-            if (i == 0 || j == 0 || i == width || j == height) {
-                putString("*", WHITE);
-            } else if (i == fruitX && j == fruitY && !(headX==fruitX && headY==fruitY) && !(headX2==fruitX && headY2==fruitY)) {
-                putString("0", RED);
-            } else if (i == headX && j == headY) {
-                putString("o", WHITE);
-			}else if(i == headX2 && j == headY2){
+			}else if((players == 2) && (i == headX2 && j == headY2)){
 				putString("o", BLUE);
             } else {
                 for (k = 0; k < size; k++) {
@@ -150,14 +126,18 @@ void render2(void) {
                         p = 0;
                         break;
                     }
+
                 }
-				for (k = 0; k < size2; k++) {
+				if(players == 2){
+					for (k = 0; k < size2; k++) {
                     if (i == bodyX2[k] && j == bodyY2[k]) {
                         putString("+", BLUE);
                         p = 0;
                         break;
                     }
                 }
+				}
+				
                 if (p) {
                     putString(" ", WHITE);
                 }
@@ -165,10 +145,17 @@ void render2(void) {
         }
         putNewLine();
     }
-    putString("Player 1 score: ", WHITE);
-    putInt(score);
-	putString("\nPlayer 2 score: ", WHITE);
-    putInt(score2);
+	if(players == 1){
+		putString("Your Score: ", WHITE);
+    	putIntColor(score, WHITE);
+	}
+	if(players == 2){
+		putString("Player 1 score: ", WHITE);
+    	putInt(score);
+		putString("\nPlayer 2 score: ", WHITE);
+    	putInt(score2);
+	}
+    
 }
 
 void placeFruit(void) {
@@ -180,6 +167,10 @@ void placeFruit(void) {
         // Asegúrate de que la fruta no se superponga con el cuerpo de la serpiente
         int overlap = 0;
         for (int i = 0; i < size; i++) {
+			if((players == 2) && (fruitX == bodyX2[i] && fruitY == bodyY2[i])){			// no me gusta que este checkeando constantemente si hay 2 jugadores
+				overlap = 1;
+                break;
+			}
             if (fruitX == bodyX[i] && fruitY == bodyY[i]) {
                 overlap = 1;
                 break;
@@ -192,37 +183,9 @@ void placeFruit(void) {
     }
 }
 
-void placeFruit2(void) {
-    int maxTries = 100; // Límite de intentos para evitar bucles infinitos
-    for (int try = 0; try < maxTries; try++) {
-        fruitX = custom_rand() % (width - 2) + 1;
-        fruitY = custom_rand() % (height - 2) + 1;
-
-        // Asegúrate de que la fruta no se superponga con el cuerpo de la serpiente
-        int overlap = 0;
-        for (int i = 0; i < size; i++) {
-            if (fruitX == bodyX[i] && fruitY == bodyY[i]) {
-                overlap = 1;
-                break;
-            }
-        }
-
-		for (int i = 0; i < size2; i++) {
-            if (fruitX == bodyX2[i] && fruitY == bodyY2[i]) {
-                overlap = 1;
-                break;
-            }
-        }
-
-        if (!overlap) {
-            break; // Ubicación válida para la fruta
-        }
-    }
-}
 
 
-
-// Esta función genera un número pseudoaleatorio en el rango [0, RAND_MAX]
+// Random number in the range [0, RAND_MAX]
 int custom_rand() {
 	int numeros[] = {56, 34, 72, 19, 88, 45, 27, 63, 11, 75,
                     90, 30, 12, 50, 42, 67, 22, 98, 14, 61,
@@ -234,8 +197,18 @@ int custom_rand() {
 }
 
 void setupGame(void) {
-	headX=height/2;
-	headY=width/2;
+	if(players == 2){
+		headX=height/3;
+		headY=width/3;
+		headX2=2*height/3;
+		headY2=2*width/3;
+		size2 = 0;
+	}
+	if(players == 1){
+		headX=height/2;
+		headY=width/2;
+	}
+	
 	call_getBuffPosition(&buffer_pos);
 	width=30;
 	height=30;
@@ -248,72 +221,23 @@ void setupGame(void) {
 	prev_pos = 0;
 }
 
-void setupGame2(void) {
-	headX=height/3;
-	headY=width/3;
-	headX2=2*height/3;
-	headY2=2*width/3;
-	call_getBuffPosition(&buffer_pos);
-	width=30;
-	height=30;
-	gameOver=0;
-	direction=2;
-	size=0;
-	size2=0;
-	score=0;
-	speed=50;
-	seed_count = 0;
-	prev_pos = 0;
-}
+
 
 void fruitCheck(void) {
-	if(headX==fruitX && headY==fruitY) {
-		score+=10;
-		size++;
-		placeFruit();
-	}
-}
-
-void fruitCheck2(void) {
-	if(headX==fruitX && headY==fruitY) {
-		score+=10;
-		size++;
-		placeFruit();
-	}
-	if(headX2==fruitX && headY2==fruitY) {
-		score2+=10;
+	if((players == 2) && (headX2 == fruitX && headY2 == fruitY)){
+		score2 += 10;
 		size2++;
+		placeFruit();
+
+	}
+	else if(headX==fruitX && headY==fruitY) {
+		score+=10;
+		size++;
 		placeFruit();
 	}
 }
 
 void inputCheck(void) {
-	char c;
-	call_getBuffPosition(&buffer_pos);
-	if (prev_pos < buffer_pos){
-		prev_pos = buffer_pos;
-		call_getLastKey(&c, buffer_pos);
-		switch (c) {
-			case 'w':
-				if(direction!=3)
-					direction=1;
-				break;
-			case 'd':
-				if(direction!=4)
-					direction=2;
-				break;
-			case 's':
-				if(direction!=1)
-					direction=3;
-				break;
-			case 'a':
-				if(direction!=2)
-					direction=4;
-					break;
-		}
-	}
-}
-void inputCheck2(void) {
 	char c;
 	call_getBuffPosition(&buffer_pos);
 	if (prev_pos < buffer_pos){
@@ -386,39 +310,8 @@ void moveSnake(void) {
 		case 4:
 			headX--;
 	}
-}
-
-void moveSnake2(void) {
-	int x1,x2,y1,y2,i;
-	if(size==1){
-		bodyX[0]=headX;
-		bodyY[0]=headY;
-	} else {
-		x1=headX;
-		y1=headY;
-		for(i=0;i<size;i++) {
-			x2=bodyX[i];
-			y2=bodyY[i];
-			bodyX[i]=x1;
-			bodyY[i]=y1;
-			x1=x2;
-			y1=y2;
-		}
-	}
-	switch (direction) {
-		case 1:
-			headY--;
-			break;
-		case 2:
-			headX++;
-			break;
-		case 3:
-			headY++;
-			break;
-		case 4:
-			headX--;
-	}
-	if(size2==1){
+	if(players == 2){
+		if(size2==1){
 		bodyX2[0]=headX2;
 		bodyY2[0]=headY2;
 	} else {
@@ -446,28 +339,46 @@ void moveSnake2(void) {
 		case 4:
 			headX2--;
 	}
+	}
 }
+
 
 void gameOverCheck(void) {
-	int i;
-	for(i=0;i<size-1;i++) {
-		if(headX==bodyX[i] && headY==bodyY[i])
-			gameOver=1;
+	// check if player1 is out of bounds
+	if(headX==width||headX==0||headY==height||headY==0){
+		gameOver = 1;
+		return;
 	}
-	if(headX==width||headX==0||headY==height||headY==0)
-		gameOver=1;
-}
 
-void gameOverCheck2(void) {
-	int i;
-	for(i=0;i<size-1;i++) {
+	// check if player1 crashed againts itself
+	if(players == 1){
+		for(int i=0;i<size-1;i++) {
 		if(headX==bodyX[i] && headY==bodyY[i])
 			gameOver=1;
 	}
-	for(i=0;i<size2-1;i++) {
-		if(headX2==bodyX2[i] && headY2==bodyY2[i])
-			gameOver=1;
 	}
-	if(headX==width||headX==0||headY==height||headY==0||headX2==width||headX2==0||headY2==height||headY2==0)
-		gameOver=1;
+	
+
+	if(players == 2){
+		// check if player 2 is out of bounds
+		if(headX2==width||headX2==0||headY2==height||headY2==0){
+			gameOver=1;
+			return;
+		}
+
+		for(int i=0; i < size-1; i++){
+				if((headX2==bodyX[i] && headY2==bodyY[i]) || (headX==bodyX[i] && headY==bodyY[i])){
+				gameOver=1;		
+				return;
+			}	
+		}
+		
+		for(int i=0;i<size2-1;i++) {
+			if((headX==bodyX2[i] && headY==bodyY2[i]) || (headX2==bodyX2[i] && headY2==bodyY2[i]) ){		
+				gameOver = 1;
+				return; 
+			}
+		}
+		
+	}
 }
