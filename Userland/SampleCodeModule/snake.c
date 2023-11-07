@@ -3,7 +3,7 @@
 #include <UserSyscalls.h>
 
 int headX, headY, fruitX, fruitY, headX2, headY2;
-int width=30;
+int width=50;
 int height=30;
 int gameOver=0;
 int direction=2;
