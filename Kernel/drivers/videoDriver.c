@@ -235,6 +235,8 @@ void changeSize(double new_size){
     cleanBuffer();
     if ((size + new_size) == 0)
         return;
+    if ((size + new_size) == 5)
+        return;
     size += new_size; 
 }
 
