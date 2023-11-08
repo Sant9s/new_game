@@ -3,7 +3,7 @@
 #include <UserSyscalls.h>
 
 int headX, headY, fruitX, fruitY, headX2, headY2;
-int width=40;
+int width=30;
 int height=30;
 int gameOver=0;
 int direction=2;
@@ -36,7 +36,6 @@ int custom_rand();
 void goodbye();
 void snake();
 void snake_multiplayer();
-void renderBorder();
 
 void start_snake(){
      char c;
@@ -62,7 +61,6 @@ void start_snake(){
     }
 
 }
-
 
 void snake() {
 	players = 1;
@@ -179,9 +177,6 @@ void render(void) {
         }
         putNewLine();
     }
-
-
-
 	if(players == 1){
 		putString("Your Score: ", WHITE);
     	putIntColor(score, GREEN);
