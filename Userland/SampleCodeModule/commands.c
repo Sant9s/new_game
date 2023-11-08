@@ -7,7 +7,7 @@
 #include <colors.h>
 
 static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE", "CLEAR","EXIT"};
-void (*functionPointers[COMMAND_AMOUNT])() = {help, time, call_regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell};
+void (*functionPointers[COMMAND_AMOUNT])() = {help, time, regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell};
 
 // searches for the command by going though the array of strings and comparing
 void checkCommands(char * command){
@@ -24,6 +24,11 @@ void checkCommands(char * command){
 void commandNotFound(char * command){
     own_printf("ERROR: - '%s' is not a valid command\n", command);
     own_printf("Type help to show all commands\n", GREEN);
+}
+
+void regState(){
+    call_regState();
+    putLine();
 }
 
 

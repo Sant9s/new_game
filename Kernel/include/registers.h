@@ -17,4 +17,5 @@ extern registerStructT registers;
 
 void printRegisters(registerStructT * dumpedRegisters);
 void printReg();
+int snapshot();
 #endif /* _REGISTERS_H */

@@ -17,5 +17,6 @@ void zoomIn();
 void zoomOut();
 void exitShell();
 void play_snake();
+void regState();
 
 #endif /*__COMMANDS_H__*/

@@ -7,6 +7,7 @@
 #include "interrupts.h"
 #include "registers.h"
 
+int snap = 0;
 static char ScanCodes[256] = {
     0,   // 0x00 - Null
     0,   // 0x01 - Escape
@@ -169,6 +170,15 @@ void keyboard_handler() {
         setPos(0);  
         buff[0] = 0;  
     }
+
+    if (key == 0x0C) {
+        saveState();
+        deleteCursor();
+        drawWord("\nSnapshot taken");
+        newline();
+        snap=1;
+        return;
+    }
     
     if ((capsLockOn || shiftPressed) && !(capsLockOn && shiftPressed) && (ScanCodes[key]-('a' - 'A'))>='A' && (ScanCodes[key]-('a' - 'A'))<='Z')
         buff[buff_pos] = (ScanCodes[key]-('a' - 'A'));  // Almacena el valor de la tecla en el búfer
@@ -177,6 +187,9 @@ void keyboard_handler() {
     return; 
 }
 
+int snapshot(){
+    return snap;
+}
 
 
 
