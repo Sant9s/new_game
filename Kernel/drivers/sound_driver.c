@@ -33,6 +33,6 @@ extern void outb(uint16_t out1, uint8_t in1);
  // makes beep sound
  void beep(int freq) {
  	 play_sound(freq);
- 	 sleepms(5);
+ 	 sleepms(1);
  	 nosound();
  }

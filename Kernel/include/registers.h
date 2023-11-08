@@ -16,4 +16,5 @@ typedef struct registerStrucT{
 extern registerStructT registers;
 
 void printRegisters(registerStructT * dumpedRegisters);
+void printReg();
 #endif /* _REGISTERS_H */

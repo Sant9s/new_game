@@ -238,6 +238,7 @@ void changeSize(double new_size){
     size += new_size; 
 }
 
+
 void setSize(int new_size){
     cleanBuffer();
     if(new_size > 0){

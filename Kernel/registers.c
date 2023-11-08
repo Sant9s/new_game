@@ -3,7 +3,6 @@
 #include <interrupts.h>
 
 void printRegisters(registerStructT * registers) {
-	saveState();
 	drawWordColor(WHITE, "RIP = ");
 	drawRegisters(registers->rip);
 	drawWordColor(WHITE, "RAX = ");
@@ -38,4 +37,10 @@ void printRegisters(registerStructT * registers) {
 	drawRegisters(registers->r14);
 	drawWordColor(WHITE, "R15 = ");
 	drawRegisters(registers->r15);
+}
+
+
+void printReg(){
+    saveState();
+	printRegAsm();
 }

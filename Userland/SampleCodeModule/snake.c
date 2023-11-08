@@ -269,23 +269,19 @@ void setupGame(void) {
 
 
 void fruitCheck(void) {
-	int flag = 0;
 	if((players == 2) && (headX2 == fruitX && headY2 == fruitY)){
 		score2 += 10;
 		size2++;
-		flag = 1;
+		call_beep(100);
 		placeFruit();
 
 	}
-	else if(headX==fruitX && headY==fruitY) {
+	if(headX==fruitX && headY==fruitY) {
 		score+=10;
 		size++;
-		flag = 1;
+		call_beep(100);
 		placeFruit();
 	}
-
-	if (flag)
-		call_beep(100);
 }
 
 void inputCheck(void) {
