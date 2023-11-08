@@ -69,7 +69,7 @@ void zoomOut(){
 }
 
 void exitShell(){
-    own_printf("Exiting Shell");
+    putString("Exiting Shell", RED);
     call_sleepms(100);
     putC('.',RED);
     call_sleepms(130);

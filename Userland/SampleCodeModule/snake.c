@@ -59,7 +59,6 @@ void start_snake(){
             flag = 0;
             snake_multiplayer();
         }
-        if (flag) own_printf(" Error", RED);
     }
 
 }
