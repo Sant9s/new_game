@@ -28,7 +28,6 @@ void commandNotFound(char * command){
 
 void regState(){
     call_regState();
-    putLine();
 }
 
 

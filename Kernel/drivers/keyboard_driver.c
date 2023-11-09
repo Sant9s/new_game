@@ -171,12 +171,10 @@ void keyboard_handler() {
         buff[0] = 0;  
     }
 
-    if (key == 0x0C) {
+    if (key == 0x0C) {          // make key for '-'
         saveState();
-        deleteCursor();
-        drawWord("\nSnapshot taken");
-        newline();
         snap=1;
+        buff[buff_pos] = ScanCodes[key];
         return;
     }
     

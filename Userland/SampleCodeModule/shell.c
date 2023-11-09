@@ -43,7 +43,15 @@ void read_buffer(){
             if(status) putLine();
             clearBuffer(); 
             return;
-        } else{
+        } else if(c == '-'){
+            removeCursor();
+            putNewLine();
+            own_printf("snapshot taken!");
+            putNewLine();
+            putLine();
+            flag = 1;
+        }
+        else if(c != '-'){
             if (!end_of_buffer)
                 buffer[i++] = c;
             else
@@ -53,6 +61,7 @@ void read_buffer(){
             putC(c, GREEN);
             putCursor();
         }
+
         flag = 0;
     }
     return;
