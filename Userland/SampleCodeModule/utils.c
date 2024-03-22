@@ -21,7 +21,7 @@ void putC(char c, int color){
 }
 
 void putString(char * str, int color){
-    call_sys_write(str, 0, color); 
+    call_sys_write(str, 0, color);              // lo escribe en el buffer nomas (creo) TESTEAR
     putIntoScreen(str);
 }
 
@@ -274,4 +274,8 @@ void setFontSize(int size){
 
 void putCharColorPos(char character, int color, int x, int y){
     call_put_char_in_set_position(character, color, x, y);
+}
+
+void putSquare(int x, int y, int size, int color){
+    call_put_square(x, y, size, color);
 }

@@ -286,10 +286,13 @@ void fruitCheck(void) {
 
 void inputCheck(void) {
 	char c;
-	call_getBuffPosition(&buffer_pos);
+
+	// esta parte no se que carajo hace
+	call_getBuffPosition(&buffer_pos);			
 	if (prev_pos < buffer_pos){
 		prev_pos = buffer_pos;
-		call_getLastKey(&c, buffer_pos);
+		call_getLastKey(&c, buffer_pos);	
+	// 
 		switch (c) {
 			case 'w':
 				if(direction!=3)
@@ -394,10 +397,6 @@ void moveSnake(void) {
 
 
 void gameOverCheck(void) {
-	
-	
-
-	
 	if(players == 1){
 		// check if player1 is out of bounds
 		if((headX==width||headX==0||headY==height||headY==0)){

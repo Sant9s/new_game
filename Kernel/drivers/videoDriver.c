@@ -262,3 +262,8 @@ void putCharInSetSpace(char c, int color, int x, int y){
     cursorY = y;
     drawChar(COLORS[color], c);
 }
+
+void drawSquareInSetPosition(int x, int y, int size, int color){
+    put_square(x, y, size, COLORS[color]);
+
+}

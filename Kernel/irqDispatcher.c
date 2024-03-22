@@ -63,7 +63,6 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 
 	case 4:
 		printReg();
-		//printRegAsm();
 		break;
 
 	case 5:
@@ -103,6 +102,9 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 		putCharInSetSpace(rsi, rdx, rdx, rcx);
 	case 16:
 		beep(rsi);
+		break;
+	case 17:
+		drawSquareInSetPosition(rsi, rdx, rcx, r8);
 		break;
 
 	default:

@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "UserSyscalls.h"
 
-#define COMMAND_AMOUNT 10
+#define COMMAND_AMOUNT 11
 
 void checkCommands(char * command); // searches for command
 void commandNotFound(char * command);
@@ -18,5 +18,6 @@ void zoomOut();
 void exitShell();
 void play_snake();
 void regState();
+void snake2();
 
 #endif /*__COMMANDS_H__*/

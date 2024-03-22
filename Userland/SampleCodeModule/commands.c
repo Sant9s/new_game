@@ -4,10 +4,11 @@
 #include "funcAsm.h"
 #include "include/shell.h"
 #include <snake.h>
+#include <snake2.h>
 #include <colors.h>
 
-static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE", "CLEAR","EXIT"};
-void (*functionPointers[COMMAND_AMOUNT])() = {help, time, regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell};
+static char command_list[COMMAND_AMOUNT][10] = {"HELP", "TIME", "REGSTATE", "DIV0", "INVALOP", "ZOOMOUT", "ZOOMIN", "SNAKE", "CLEAR","EXIT", "SNAKE2"};
+void (*functionPointers[COMMAND_AMOUNT])() = {help, time, regState, div0, invalidOp, zoomOut, zoomIn, play_snake, clearScreen, exitShell, snake2};
 
 // searches for the command by going though the array of strings and comparing
 void checkCommands(char * command){
@@ -88,3 +89,7 @@ void play_snake(){
     setFontSize(1);
  }
     
+void snake2(){
+    start_snake2();
+    setFontSize(1);
+}

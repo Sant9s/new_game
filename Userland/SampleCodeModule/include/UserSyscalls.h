@@ -17,4 +17,6 @@ void call_getLastKey(char * key, int pos);
 void call_set_font_size(int size);
 void call_beep(int freq);
 void call_put_char_in_set_position(char character, int color, int x, int y);
+
+void call_put_square(int x, int y, int size, int color);
 #endif /* USERSYSCALLS_H */

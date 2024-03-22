@@ -14,6 +14,7 @@ GLOBAL call_getLastKey
 GLOBAL call_set_font_size
 GLOBAL call_put_char_in_set_position
 GLOBAL call_beep
+GLOBAL call_put_square
 
 section .text
 
@@ -64,3 +65,5 @@ call_put_char_in_set_position:
     call_to_handler 15
 call_beep:
     call_to_handler 16
+call_put_square:
+    call_to_handler 17                  ; tengo que hacer todo el recorrido de esta funcion

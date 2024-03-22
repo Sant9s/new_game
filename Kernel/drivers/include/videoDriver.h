@@ -28,6 +28,7 @@ void clearScreen();
 void setFontSize(int value);
 void setSize(int new_size);
 void putCharInSetSpace(char c, int color, int x, int y);
+void drawSquareInSetPosition(int x, int y, int size, int color);
 
 
 #endif /* _VIDEO_DRIVER_H */
