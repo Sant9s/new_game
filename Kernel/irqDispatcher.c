@@ -106,7 +106,8 @@ int int_80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, 
 	case 17:
 		drawSquareInSetPosition(rsi, rdx, rcx, r8);
 		break;
-
+	case 18:
+		fake_sys_read((char*)rsi);
 	default:
 		return 0;
 	}

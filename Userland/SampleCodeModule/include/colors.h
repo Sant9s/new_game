@@ -1,11 +1,13 @@
 #ifndef __COLORS_H__
 #define __COLORS_H__
 
+typedef enum{
+    GREEN = 0,
+    RED,
+    WHITE,
+    BLUE,
+    BLACK
+} Color;
 
-#define RED 1
-#define GREEN 0
-#define BLUE 3
-#define WHITE 2
-#define BLACK 4
 
 #endif /*__COLORS_H__*/

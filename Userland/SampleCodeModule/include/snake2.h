@@ -50,6 +50,9 @@ void singleplayer_startup();
 void singleplayer_gameover();
 void multiplayer_gameover();
 void gameover_titlecard();
+void deleteTail(); 
+void check_gameover_singleplayer();
+void gamePaused();
 
 void check_input();
 

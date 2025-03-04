@@ -25,3 +25,24 @@ void sys_read(char *buf, int len, int filedescriptor){
     }
 
 }
+
+void fake_sys_read(char *buf){
+    int pos;
+    getBufferPosition(&pos);
+    char aux = 0;
+    aux = getCharAt(pos);
+    buf[0] = ' ';
+    setPos(pos+1);
+    getBufferPosition(&pos); 
+
+    // for (int i = 0; i < len; ){
+    //     _hlt();
+    //     aux = getCharAt(pos);
+    //     if (aux > 0 && aux <= 255){ 
+    //         if (aux == 0x39) buf[i++]=' ';
+    //         else buf[i++]=aux;
+    //         setPos(pos+1);
+    //     }
+    //     getBufferPosition(&pos); 
+    // }
+}

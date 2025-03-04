@@ -15,6 +15,7 @@ GLOBAL call_set_font_size
 GLOBAL call_put_char_in_set_position
 GLOBAL call_beep
 GLOBAL call_put_square
+GLOBAL call_fake_sys_read
 
 section .text
 
@@ -67,3 +68,5 @@ call_beep:
     call_to_handler 16
 call_put_square:
     call_to_handler 17                  ; tengo que hacer todo el recorrido de esta funcion
+call_fake_sys_read:
+    call_to_handler 18
