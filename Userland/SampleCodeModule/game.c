@@ -211,7 +211,7 @@ void move_player(){
     MapInfo west_block = map_positions[player_position.x-1][player_position.y];
     
     // check if the player can move
-    if(!((west_block.color != BLACK && player_direction == WEST) || (north_block.color != BLACK && player_direction == NORTH) || (south_block.color != BLACK && player_direction == SOUTH))){
+    if(!((west_block.color != BLACK && player_direction == WEST) || (north_block.color != BLACK && player_direction == NORTH) || (south_block.color != BLACK && player_direction == SOUTH) || (east_block.color != BLACK && player_direction == EAST))){
         map_positions[player_position.x][player_position.y].color = BLACK; // player moves from their spot
         change_square_color_by_square_position(player_position.x, player_position.y, BLACK);
         switch (player_direction) {
@@ -253,10 +253,10 @@ void move_player(){
         damage_player();
     }
     else if(west_block.blocktype == west_door && player_direction == WEST){
-        
+        move_west_door();
     }
     else if(east_block.blocktype == east_door && player_direction == EAST){
-        
+        move_east_door();
     }
 }
 
@@ -384,6 +384,9 @@ void pick_conversation(Blocktype block){
     if(block == healer){
         draw_healer_conversation();
     }
+    if(block == west_door || block == east_door){
+        draw_door_conversation();
+    }
 }
 
 
@@ -470,4 +473,43 @@ void redraw_everything(){
 
 void draw_square_for_dialog(Color color){
     putSquare(800, 600, DIALOGUE_SQUARE, color);
+}
+
+void move_east_door(){
+    call_clear_screen();
+    set_map_positions_at_start();
+    create_walls();
+    create_character();
+    
+
+}
+
+void move_west_door(){
+    call_clear_screen();
+    set_map_positions_at_start();
+    create_walls();
+    create_character();
+}
+
+void draw_door_conversation(){
+    clearScreen();
+    setFontSize(4);
+    call_sleepms(200);
+    putString("Hello, I am the door\n", BLUE);
+    call_sleepms(200);
+    if(player_hp == MAX_HP){
+        putString("blah blah\n", WHITE);
+        call_sleepms(400);
+        return;
+    }
+    putString("I will heal you, my son\n", WHITE);
+    call_sleepms(400);
+    putString("30 hp restored\n", GREEN);
+    player_hp += 3;
+    if(player_hp > MAX_HP){
+        player_hp = MAX_HP;
+    }
+    if(player_hp >= 6){
+        hp_color = GREEN;
+    }
 }

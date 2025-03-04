@@ -64,6 +64,9 @@ void pick_conversation(Blocktype block);
 void redraw_everything();
 void draw_square_for_dialog(Color color);
 void create_walls();
+void move_west_door();
+void move_east_door();
+void draw_door_conversation();
 
 
 
