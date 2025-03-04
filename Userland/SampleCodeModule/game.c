@@ -3,13 +3,19 @@
 #include <UserSyscalls.h>
 #include <game.h>
 #include <buffer.h>
-#define SMALL_SQUARE 10     // amount of pixeles in vertice of a square
-#define DIALOGUE_SQUARE 150
+
+// sizes
+#define SMALL_SQUARE 10             // amount of pixeles in vertice of a square
+#define DIALOGUE_SQUARE 150         // size of character during dialogue
+
+// map limits
 #define MAX_X_PIXEL 1010
 #define MAX_Y_PIXEL 550
 #define MAX_Y_SCREEN_PIXEL 700
 #define MAX_X_SMALL_SQUARE MAX_X_PIXEL / SMALL_SQUARE
 #define MAX_Y_SMALL_SQUARE MAX_Y_PIXEL / SMALL_SQUARE
+
+// player settings
 #define PLAYER_COLOR GREEN
 #define GAME_SPEED 1
 #define MAX_HP 12
@@ -28,22 +34,19 @@ Blocktype last_block_checked = empty;
 // en el eje Y entran 76 small_squares (10) y un poquito -> hay 760 pixeles mas o menos
 
 // entonces el tablero esta dividido en X de 0 a 101 y en Y de 0 a 75
+// pero el playable tablero va de 0 a 101 y de 0 a 55
 
 void start_new_game(){
     game_over = 0;
-    for(int i=0; i<=MAX_X_SMALL_SQUARE + 1; i++){
-        for(int j=0; j<=MAX_Y_SMALL_SQUARE + 1; j++){
-            map_positions[i][j].color = BLACK;
-            map_positions[i][j].blocktype = empty;
-        }
-    }
-    set_map_positions_at_start();
     new_game_title_card();
+
+    // set map_positions to black and empty
+    set_map_positions_at_start();
     create_character();
     create_new_game_map();
-    draw_npc();
-    draw_enemy();
-    draw_healer();
+    create_npc();
+    create_enemy();
+    create_healer();
     game_running();
 }
 
@@ -74,22 +77,7 @@ void new_game_title_card(){
 
 void create_new_game_map(){
     // create walls around map
-    for(int i=0; i<MAX_X_SMALL_SQUARE + 1; i++){
-        change_square_color_by_square_position(i, 0, BLUE);
-        map_positions[i][0].blocktype = map_barrier;
-    }
-    for(int i=0; i<MAX_X_SMALL_SQUARE + 1; i++){
-        change_square_color_by_square_position(i, MAX_Y_SMALL_SQUARE, BLUE);
-        map_positions[i][MAX_Y_SMALL_SQUARE].blocktype = map_barrier;
-    }
-    for(int i=0; i<MAX_Y_SMALL_SQUARE + 1; i++){
-        change_square_color_by_square_position(0, i, BLUE);
-        map_positions[0][i].blocktype = map_barrier;
-    }
-    for(int i=0; i<MAX_Y_SMALL_SQUARE + 1; i++){
-        change_square_color_by_square_position(MAX_X_SMALL_SQUARE, i, BLUE);
-        map_positions[MAX_X_SMALL_SQUARE][i].blocktype = map_barrier;
-    }
+    create_walls();
 
     // create some pillars and stuff
     for(int i=0; i<40; i++){
@@ -103,6 +91,28 @@ void create_new_game_map(){
 
 }
 
+void create_walls(){
+    for(int i=0; i<MAX_X_SMALL_SQUARE + 1; i++){
+        change_square_color_by_square_position(i, 0, BLUE);
+        change_square_color_by_square_position(i, MAX_Y_SMALL_SQUARE, BLUE);
+        map_positions[i][0].blocktype = map_barrier;
+        map_positions[i][MAX_Y_SMALL_SQUARE].blocktype = map_barrier;
+    }
+    for(int i=0; i<MAX_Y_SMALL_SQUARE + 1; i++){
+        if(i < 29 || i > 31){
+            change_square_color_by_square_position(0, i, BLUE);
+            change_square_color_by_square_position(MAX_X_SMALL_SQUARE, i, BLUE);
+            map_positions[0][i].blocktype = map_barrier;
+            map_positions[MAX_X_SMALL_SQUARE][i].blocktype = map_barrier;
+        }
+        else {
+            map_positions[0][i].blocktype = west_door;
+            map_positions[MAX_X_SMALL_SQUARE][i].blocktype = east_door;
+        }
+        
+    }
+}
+
 // this funcion recieves an x (0, 101) and a y (0, 75) and paints it
 void change_square_color_by_square_position(int x_square, int y_square, Color color){
     map_positions[x_square][y_square].color = color;
@@ -114,6 +124,7 @@ void set_map_positions_at_start(){
     for(int x = 0; x <= MAX_X_SMALL_SQUARE; x++){
         for(int y = 0; y <= MAX_Y_SMALL_SQUARE; y++){
             map_positions[x][y].color = BLACK;
+            map_positions[x][y].blocktype = empty;
         }
     }
 }
@@ -128,6 +139,21 @@ void create_character(){
     hp_color = GREEN;
 }
 
+void create_npc(){
+    change_square_color_by_square_position(10, 10, WHITE);
+    map_positions[10][10].blocktype = npc;
+}
+
+void create_enemy(){
+    change_square_color_by_square_position(25, 10, RED);
+    map_positions[25][10].blocktype = enemy;
+}
+
+void create_healer(){
+    change_square_color_by_square_position(80, 10, BLUE);
+    map_positions[80][10].blocktype = healer;
+}
+
 void draw_bigger_square(int x_square, int y_square, Color color){
     for(int i=x_square-1; i<=x_square+1; i++){
         for(int j=y_square-1; j<=y_square+1; j++){
@@ -139,13 +165,13 @@ void draw_bigger_square(int x_square, int y_square, Color color){
 
 void check_player_input(void) {
 	char c;
-	call_getBuffPosition(&my_buffer_position);         // que pingo hace esto.                 
-	call_getLastKey(&c, my_buffer_position);       // TESTEAR MOVIMIENTO
+	call_getBuffPosition(&my_buffer_position);                     
+	call_getLastKey(&c, my_buffer_position);       // tengo la teoria que puedo mejorar todo esto usando getC()
 	switch (c) {
 		case 'w':
 			player_direction=NORTH;
             last_direction_moved=NORTH;
-            call_fake_sys_read(&c);
+            call_fake_sys_read(&c);                 // adds a ' ' to the buffer to prevent contiunous movement
 			break;
 		case 'd':
 			player_direction=EAST;
@@ -178,32 +204,39 @@ void check_player_input(void) {
 }
 
 void move_player(){
-    if(!((map_positions[player_position.x-1][player_position.y].color != BLACK && player_direction == WEST) || (map_positions[player_position.x+1][player_position.y].color != BLACK && player_direction == EAST) || (map_positions[player_position.x][player_position.y-1].color != BLACK && player_direction == NORTH) || (map_positions[player_position.x][player_position.y+1].color != BLACK && player_direction == SOUTH))){
+    
+    MapInfo north_block = map_positions[player_position.x][player_position.y-1];
+    MapInfo east_block = map_positions[player_position.x+1][player_position.y];
+    MapInfo south_block = map_positions[player_position.x][player_position.y+1];
+    MapInfo west_block = map_positions[player_position.x-1][player_position.y];
+    
+    // check if the player can move
+    if(!((west_block.color != BLACK && player_direction == WEST) || (north_block.color != BLACK && player_direction == NORTH) || (south_block.color != BLACK && player_direction == SOUTH))){
         map_positions[player_position.x][player_position.y].color = BLACK; // player moves from their spot
         change_square_color_by_square_position(player_position.x, player_position.y, BLACK);
         switch (player_direction) {
-			case NORTH:             // move south
+			case NORTH:            
                 map_positions[player_position.x][player_position.y].color = BLACK;
                 map_positions[player_position.x][player_position.y].blocktype = empty;
                 player_position.y--;
                 map_positions[player_position.x][player_position.y].color = PLAYER_COLOR;
                 map_positions[player_position.x][player_position.y].blocktype = npc;
 				break;
-			case EAST:             // move east
+			case EAST:           
                 map_positions[player_position.x][player_position.y].color = BLACK;
                 map_positions[player_position.x][player_position.y].blocktype = empty;
                 player_position.x++;
                 map_positions[player_position.x][player_position.y].color = PLAYER_COLOR;
                 map_positions[player_position.x][player_position.y].blocktype = npc;
 				break;
-			case SOUTH:             // move north
+			case SOUTH:             
                 map_positions[player_position.x][player_position.y].color = BLACK;
                 map_positions[player_position.x][player_position.y].blocktype = empty;
                 player_position.y++;
                 map_positions[player_position.x][player_position.y].color = PLAYER_COLOR;
                 map_positions[player_position.x][player_position.y].blocktype = npc;
 				break;
-			case WEST:             // move west
+			case WEST:            
                 map_positions[player_position.x][player_position.y].color = BLACK;
                 map_positions[player_position.x][player_position.y].blocktype = empty;
                 player_position.x--;
@@ -216,25 +249,18 @@ void move_player(){
         change_square_color_by_square_position(player_position.x, player_position.y, PLAYER_COLOR);
         player_direction = STILL;
     }
-    else if(((map_positions[player_position.x-1][player_position.y].color == RED && player_direction == WEST) || (map_positions[player_position.x+1][player_position.y].color == RED && player_direction == EAST) || (map_positions[player_position.x][player_position.y-1].color == RED && player_direction == NORTH) || (map_positions[player_position.x][player_position.y+1].color == RED && player_direction == SOUTH))){
+    else if(((west_block.color == RED && player_direction == WEST) || (east_block.color == RED && player_direction == EAST) || (north_block.color == RED && player_direction == NORTH) || (south_block.color == RED && player_direction == SOUTH))){
         damage_player();
+    }
+    else if(west_block.blocktype == west_door && player_direction == WEST){
+        
+    }
+    else if(east_block.blocktype == east_door && player_direction == EAST){
+        
     }
 }
 
-void draw_npc(){
-    change_square_color_by_square_position(10, 10, WHITE);
-    map_positions[10][10].blocktype = npc;
-}
 
-void draw_enemy(){
-    change_square_color_by_square_position(25, 10, RED);
-    map_positions[25][10].blocktype = enemy;
-}
-
-void draw_healer(){
-    change_square_color_by_square_position(80, 10, BLUE);
-    map_positions[80][10].blocktype = healer;
-}
 
 void game_running(){
     game_over = 0;
@@ -422,6 +448,7 @@ void draw_healer_conversation(){
     }
     putString("I will heal you, my son\n", WHITE);
     call_sleepms(400);
+    putString("30 hp restored\n", GREEN);
     player_hp += 3;
     if(player_hp > MAX_HP){
         player_hp = MAX_HP;
