@@ -29,8 +29,6 @@ void sys_read(char *buf, int len, int filedescriptor){
 void fake_sys_read(char *buf){
     int pos;
     getBufferPosition(&pos);
-    char aux = 0;
-    aux = getCharAt(pos);
     buf[0] = ' ';
     setPos(pos+1);
     getBufferPosition(&pos); 

@@ -279,3 +279,10 @@ void putCharColorPos(char character, int color, int x, int y){
 void putSquare(int x, int y, int size, int color){
     call_put_square(x, y, size, color);
 }
+
+void putStringColorPos(char * str, int color, int x, int y){
+    // tengo que hacer una funcion que llame constantemente a putCharColorPos    
+
+}
+
+// getFontSize tengo que hacerlo
